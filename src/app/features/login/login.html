@@ -1,0 +1,14 @@
+<div style="max-width: 400px; margin: auto; padding: 2rem;">
+  <mat-card>
+    <h2>Giriş Yap</h2>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Kullanıcı Adı</mat-label>
+      <input matInput [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Şifre</mat-label>
+      <input matInput type="password" [(ngModel)]="password">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="login()">Giriş</button>
+  </mat-card>
+</div>
