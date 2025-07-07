@@ -1,19 +1,34 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent} from './features/login/login';
-import { Dashboard } from './features/dashboard/dashboard';
-import { Users} from './features/users/users';
+import { LoginComponent } from './features/login/login';
+import { AdminComponent } from './features/Admin/admin';
+import { CustomerComponent } from './features/customer/customer';
+import { SellerComponent } from './features/seller/seller';
+import { UsersComponent } from './features/users/users';
 import { AuthGuard } from './core/auth/auth-guard';
+import { RoleGuard } from './services/role-guard';
+import { RegisterComponent } from './features/register/register';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
-  { path: 'users', component: Users, canActivate: [AuthGuard] }
+  { path: 'register', component: RegisterComponent },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'ADMIN' },
+  },
+  {
+    path: 'customer',
+    component: CustomerComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'CUSTOMER' },
+  },
+  {
+    path: 'seller',
+    component: SellerComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'SELLER' },
+  },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

@@ -10,7 +10,7 @@ import { UserModel } from '../../models/user/user.model';
   imports: [CommonModule, MatTableModule],
   templateUrl: './users.html'
 })
-export class Users implements OnInit {
+export class UsersComponent implements OnInit {
   users: UserModel[] = [];
 
   constructor(private userService: UserService) {}

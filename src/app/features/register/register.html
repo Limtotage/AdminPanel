@@ -1,0 +1,31 @@
+<div style="max-width: 500px; margin: auto; padding: 2rem;">
+  <mat-card>
+    <h2>Kayıt Ol</h2>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Ad Soyad</mat-label>
+      <input matInput [(ngModel)]="fullname" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Kullanıcı Adı</mat-label>
+      <input matInput [(ngModel)]="username" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Şifre</mat-label>
+      <input matInput type="password" [(ngModel)]="password" required />
+    </mat-form-field>
+
+    <label>Rol Seçin:</label>
+    <mat-radio-group [(ngModel)]="role">
+      <mat-radio-button value="ROLE_ADMIN">Admin</mat-radio-button>
+      <mat-radio-button value="ROLE_SELLER">Seller</mat-radio-button>
+      <mat-radio-button value="ROLE_CUSTOMER">Customer</mat-radio-button>
+    </mat-radio-group>
+
+    <div style="margin-top: 1rem;">
+      <button mat-raised-button color="primary" (click)="register()">Kayıt Ol</button>
+    </div>
+  </mat-card>
+</div>

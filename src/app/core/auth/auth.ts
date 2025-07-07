@@ -14,19 +14,9 @@ interface LoginResponse {
 @Injectable({
   providedIn: 'root'
 })
-export class Auth {
-
+export class AuthService {
   constructor(private http: HttpClient) { }
-
-  login(data: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('/api/login', data);
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  login(credentials:{username: string, password: string}){
+    return this.http.post<{token:string}>('http://localhost:8080/api/auth/login',credentials);
   }
 }
