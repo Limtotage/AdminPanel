@@ -1,1 +1,11 @@
-<p>customer works!</p>
+<div style="padding: 1rem">
+  <div style = "text-align: right;">
+    <button mat-button color="warn" (click)="deleteUser()">Kullanıcıyı Sil</button>
+  </div>
+  <h2>Ürün Listesi</h2>
+  <div *ngFor="let product of products">
+    <mat-checkbox (change) = "toggleProduct(product.id,$event.checked)">
+      {{product.name}}
+    </mat-checkbox>
+  </div>
+</div>
