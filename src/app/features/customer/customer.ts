@@ -17,7 +17,7 @@ export class CustomerComponent implements OnInit {
   currentUser: any;
   selectedProductIds: Set<number> = new Set();
 
-  constructor(private authservice: AuthService,private http: HttpClient) {}
+  constructor(private authservice: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.authservice.getCurrentUser().subscribe((user) => {
@@ -37,18 +37,31 @@ export class CustomerComponent implements OnInit {
   }
   submitSelectedProducts() {
     const selectedIds = Array.from(this.selectedProductIds);
-    this.http.put('http://localhost:8080/api/customer', selectedIds).subscribe(()=>alert("Seçili Ürünler Eklenmiştir."))
+    const updatedCustomer = {
+      fullname: this.currentUser.fullname,
+      username: this.currentUser.username,
+      products: selectedIds,
+    };
+    console.log(selectedIds);
+    this.http
+      .put(
+        `http://localhost:8080/api/customer/${this.currentUser.id}`,
+        updatedCustomer
+      )
+      .subscribe(() => alert('Seçili Ürünler Eklenmiştir.'));
   }
-  deleteUser(){
+  deleteUser() {
     const token = localStorage.getItem('token');
-    if(confirm('Hesabınızı silmek istediğinize emin misiniz?')){
-      this.http.delete('http://localhost:8080/api/customer/delete',{
-        headers: { Authorization: `Bearer ${token}`}
-      }).subscribe(()=>{
-        localStorage.removeItem('token');
-        alert('Hesabınızı silindi');
-        location.href ='/login';
-      })
+    if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
+      this.http
+        .delete('http://localhost:8080/api/customer/delete', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .subscribe(() => {
+          localStorage.removeItem('token');
+          alert('Hesabınızı silindi');
+          location.href = '/login';
+        });
     }
   }
 }

@@ -1,5 +1,0 @@
-Zone.js eksik olduğu için çelışmıyormuş frontend ile backend bağlanılıyor.
-Auth Service ve login componentta değişiklikler oldu.
-register sayfası ve role göre syfalar ayarlandı admin ise admin panel , customer ise Cutomer panel gibi.
-Login Başarılı register Başarılı. Şimdi Admin, Customer ve Sellera ait fonksiyonları panele eklenecek öncelik Customer.
-Customer Yarım Kaldı.

@@ -1,11 +1,21 @@
 <div style="padding: 1rem">
-  <div style = "text-align: right;">
-    <button mat-button color="warn" (click)="deleteUser()">Kullanıcıyı Sil</button>
+  <div style="text-align: right">
+    <button mat-button color="warn" (click)="deleteUser()">
+      Kullanıcıyı Sil
+    </button>
   </div>
   <h2>Ürün Listesi</h2>
   <div *ngFor="let product of products">
-    <mat-checkbox (change) = "toggleProduct(product.id,$event.checked)">
-      {{product.name}}
+    <mat-checkbox (change)="toggleProduct(product.id, $event.checked)">
+      {{ product.name }}
     </mat-checkbox>
   </div>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submitSelectedProducts()"
+    style="margin-top: 1rem"
+  >
+    Ürünleri Ekle
+  </button>
 </div>
