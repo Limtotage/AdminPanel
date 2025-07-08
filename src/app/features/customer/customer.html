@@ -8,6 +8,7 @@
   <div *ngFor="let product of products">
     <mat-checkbox (change)="toggleProduct(product.id, $event.checked)">
       {{ product.name }}
+      {{product.price}}
     </mat-checkbox>
   </div>
   <button

@@ -1,3 +1,9 @@
 CORS Config ayarları çakışıyormuş security confige cors ayarları eklendikten sonra kaldırmak gerekiyormuş.
+
 Customer Page ürün listeleme düzgün çalışıyor.
+
 jwt-interceptor dosyasında eski versiyona göre yazılması artık kabul görmediği için interceptor çalışmıyormuş bu yüzden de istekleri düzgün alamıyordum. 15+ hali fonksiyon bazlı olarak geçşiyormuş jwt-interceptor dosyasını düzenleyince istek attımlar düzeldi.
+
+Put isteklerinde sıkıntı bulunuyor bunu backend tarafından düzeltmem gerekiyor.
+
+Admin ve Seller paketlerin taslakları oluşturuldu.

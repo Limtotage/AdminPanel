@@ -51,11 +51,10 @@ export class CustomerComponent implements OnInit {
       .subscribe(() => alert('Seçili Ürünler Eklenmiştir.'));
   }
   deleteUser() {
-    const token = localStorage.getItem('token');
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
       this.http
-        .delete('http://localhost:8080/api/customer/delete', {
-          headers: { Authorization: `Bearer ${token}` },
+        .delete(`http://localhost:8080/api/customer/${this.currentUser.id}`, {
+          responseType: `text`,
         })
         .subscribe(() => {
           localStorage.removeItem('token');
@@ -63,5 +62,9 @@ export class CustomerComponent implements OnInit {
           location.href = '/login';
         });
     }
+  }
+  logout() {
+    localStorage.removeItem('token');
+    location.href = '/login';
   }
 }

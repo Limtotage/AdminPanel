@@ -1,1 +1,33 @@
-<p>Admin Paneline Hoş Geldiniz!</p>
+<div style="padding: 1rem;">
+  <div style="display: flex; justify-content: space-between;">
+    <h2>Admin Paneli</h2>
+    <button mat-button color="warn" (click)="deleteAccount()">Hesabı Sil</button>
+  </div>
+
+  <!-- Ürünler -->
+  <section>
+    <h3>Tüm Ürünler</h3>
+    <div *ngFor="let p of products" class="mat-elevation-z2" style="margin: 4px; padding: 4px;">
+      {{p.name}} - ₺{{p.price}}
+      <button mat-button color="warn" (click)="deleteProduct(p.id)">Sil</button>
+    </div>
+  </section>
+
+  <!-- Kullanıcılar -->
+  <section>
+    <h3>Tüm Kullanıcılar</h3>
+    <div *ngFor="let u of users" class="mat-elevation-z2" style="margin: 4px; padding: 4px;">
+      {{u.username}} - {{u.role}}
+      <button mat-button color="warn" (click)="deleteUser(u.id)">Sil</button>
+    </div>
+  </section>
+
+  <!-- Bekleyen Kategoriler -->
+  <section>
+    <h3>Onay Bekleyen Kategoriler</h3>
+    <div *ngFor="let c of pendingCategories" class="mat-elevation-z2" style="margin: 4px; padding: 4px;">
+      {{c.name}}
+      <button mat-button color="primary" (click)="approveCategory(c.id)">Onayla</button>
+    </div>
+  </section>
+</div>

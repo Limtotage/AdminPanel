@@ -34,6 +34,7 @@ export class RegisterComponent {
   constructor(private http:HttpClient, private router:Router) {}
 
   register(){
+    localStorage.removeItem('token');
     const body = {
       fullname:this.fullname,
       username:this.username,

@@ -1,1 +1,57 @@
-<p>seller works!</p>
+<div style="padding: 1rem">
+  <div style="display: flex; justify-content: space-between;">
+    <h2>Seller Paneli</h2>
+    <button mat-button color="warn" (click)="deleteUser()">Hesabı Sil</button>
+  </div>
+
+  <div style="display: flex; gap: 2rem;">
+    <!-- Sol Panel -->
+    <div style="flex: 1;">
+      <h3>Tüm Ürünler</h3>
+      <div *ngFor="let product of allProducts" class="mat-elevation-z2" style="margin-bottom: 8px; padding: 8px; border: 1px solid #ccc;">
+        {{ product.name }} - {{ product.category }} - ₺{{ product.price }}
+      </div>
+    </div>
+
+    <!-- Sağ Panel -->
+    <div style="flex: 1;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Benim Ürünlerim</h3>
+        <button mat-raised-button color="primary" (click)="showNewProductForm = !showNewProductForm">
+          Yeni Ürün
+        </button>
+      </div>
+
+      <!-- Yeni Ürün Formu -->
+      <div *ngIf="showNewProductForm" style="margin-top: 1rem;">
+        <mat-form-field appearance="fill">
+          <mat-label>Ürün Adı</mat-label>
+          <input matInput [(ngModel)]="newProduct.name">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Kategori</mat-label>
+          <input matInput [(ngModel)]="newProduct.category">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Stok</mat-label>
+          <input matInput type="number" [(ngModel)]="newProduct.stock">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Fiyat</mat-label>
+          <input matInput type="number" [(ngModel)]="newProduct.price">
+        </mat-form-field>
+
+        <button mat-button color="primary" (click)="createProduct()">Kaydet</button>
+      </div>
+
+      <!-- Ürünler Listesi -->
+      <div *ngFor="let product of myProducts" class="mat-elevation-z2" style="margin-top: 8px; padding: 8px; border: 1px solid #ccc;">
+        {{ product.name }} - ₺{{ product.price }}
+        <!-- Edit yapılacaksa buraya edit icon ve dialog eklenebilir -->
+      </div>
+    </div>
+  </div>
+</div>
