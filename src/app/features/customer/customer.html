@@ -4,19 +4,52 @@
       Kullanıcıyı Sil
     </button>
   </div>
-  <h2>Ürün Listesi</h2>
-  <div *ngFor="let product of products">
-    <mat-checkbox (change)="toggleProduct(product.id, $event.checked)">
-      {{ product.name }}
-      {{product.price}}
-    </mat-checkbox>
+  <div style="display: flex; justify-content: space-evenly">
+    <div>
+      <h2>Ürün Listesi</h2>
+      <mat-card style="max-height: 400px; overflow: auto">
+        <mat-card-content>
+          <div *ngFor="let product of products">
+            <mat-checkbox (change)="toggleProduct(product.id, $event.checked)">
+              {{ product.name }}
+              --Fiyatı--
+              {{ product.price }}
+            </mat-checkbox>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submitSelectedProducts()"
+        style="margin-top: 1rem"
+      >
+        Ürünleri Ekle
+      </button>
+    </div>
+    <div>
+      <h2>Seçilen Ürün Listesi</h2>
+      <mat-card style="max-height: 400px; overflow: auto">
+        <mat-card-content>
+          <div *ngFor="let myProduct of myProducts">
+            <mat-checkbox
+              (change)="untoggleProduct(myProduct.id, $event.checked)"
+            >
+              {{ myProduct.name }}
+              --Fiyatı--
+              {{ myProduct.price }}
+            </mat-checkbox>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="removeProductFromList()"
+        style="margin-top: 1rem"
+      >
+        Seçilenleri Kaldır
+      </button>
+    </div>
   </div>
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="submitSelectedProducts()"
-    style="margin-top: 1rem"
-  >
-    Ürünleri Ekle
-  </button>
 </div>
