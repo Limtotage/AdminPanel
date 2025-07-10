@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
+import{MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-seller',
@@ -18,21 +19,23 @@ import { AuthService } from '../../core/auth/auth';
     MatInputModule,
     FormsModule,
     RouterModule,
+    MatSelectModule
   ],
   templateUrl: './seller.html',
 })
 export class SellerComponent implements OnInit {
   allProducts: any[] = [];
   myProducts: any[] = [];
+  categories: any[] = [];
   newProduct = {
     name: '',
-    categoryId: '',
+    categoryName: '',
     stock: 0,
     price: 0.0,
   };
   updatedProduct = {
     name: '',
-    categoryId: '',
+    categoryName: '',
     stock: 0,
     price: 0.0,
   };
@@ -50,6 +53,8 @@ export class SellerComponent implements OnInit {
   refreshProducts() {
     this.loadAllProducts();
     this.loadMyProducts();
+    this.loadCategories();
+
   }
   ngOnInit(): void {
     this.authservice.getCurrentUser().subscribe((user) => {
@@ -74,12 +79,17 @@ export class SellerComponent implements OnInit {
       )
       .subscribe((data) => (this.myProducts = data));
   }
+  loadCategories() {
+    this.http
+      .get<any[]>('http://localhost:8080/api/category')
+      .subscribe((data) => (this.categories = data , console.log(this.categories)));
+  }
   selectProduct(product: any) {
     console.log(product);
     this.updatedProduct.name = product.name;
     this.updatedProduct.price = product.price;
     this.updatedProduct.stock = product.stock;
-    this.updatedProduct.categoryId = product.categoryId;
+    this.updatedProduct.categoryName = product.categoryName;
     this.selectedProductID = product.id;
     this.showUpdateProductForm = !this.showUpdateProductForm;
   }
@@ -96,12 +106,18 @@ export class SellerComponent implements OnInit {
   deleteProduct() {
     console.log(this.selectedProductID);
     this.http
-      .delete(`http://localhost:8080/api/product/${this.selectedProductID}`,{responseType:'text'})
+      .delete(`http://localhost:8080/api/product/${this.selectedProductID}`, {
+        responseType: 'text',
+      })
       .subscribe(() => {
         alert('Ürün Silindi!');
         this.showUpdateProductForm = false;
         this.refreshProducts();
       });
+  }
+  getCategoryName(id:number):string{
+    const category = this.categories.find(c=>c.id===id);
+    return category ? category.name : "UnCategorized!"
   }
   updateProduct() {
     this.http
@@ -121,7 +137,7 @@ export class SellerComponent implements OnInit {
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
       this.http
         .delete(`http://localhost:8080/api/seller/${this.currentUser.id}`, {
-          responseType:"text"
+          responseType: 'text',
         })
         .subscribe(() => {
           localStorage.removeItem('token');

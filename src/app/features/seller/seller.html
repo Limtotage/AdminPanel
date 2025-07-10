@@ -1,7 +1,7 @@
 <div style="padding: 1rem">
   <div style="display: flex; justify-content: space-between">
     <button matButton color="primary" (click)="logout()">Çıkış Yap</button>
-    <button mat-button color="warn" (click)="deleteUser()">Hesabı Sil</button>
+    <button mat-button style="color: red;" (click)="deleteUser()">Hesabı Sil</button>
   </div>
 
   <div style="display: flex; gap: 2rem">
@@ -15,7 +15,9 @@
             class="mat-elevation-z2"
             style="margin-bottom: 8px; padding: 8px; border: 1px solid #ccc"
           >
-            {{ product.name }} - {{ product.categoryId }} - ₺{{ product.price }}
+            {{ product.name }} - {{ product.categoryName }} - ₺{{
+              product.price
+            }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -49,7 +51,11 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Kategori</mat-label>
-          <input matInput [(ngModel)]="newProduct.categoryId" />
+          <mat-select [(ngModel)]="newProduct.categoryName">
+            <mat-option *ngFor="let cat of categories" [value]="cat.name">
+              {{ cat.name }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -80,7 +86,11 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Kategori</mat-label>
-          <input matInput [(ngModel)]="updatedProduct.categoryId" />
+          <mat-select [(ngModel)]="updatedProduct.categoryName">
+            <mat-option *ngFor="let cat of categories" [value]="cat.name">
+              {{ cat.name }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -123,7 +133,9 @@
               class="mat-elevation-z2"
               style="margin-top: 8px; padding: 8px; border: 1px solid #ccc"
             >
-              {{ product.name }} -{{ product.categoryId }}- ₺{{ product.price }}
+              {{ product.name }} -{{ product.categoryName }}- ₺{{
+                product.price
+              }}
               <button
                 matButton
                 color="primary"

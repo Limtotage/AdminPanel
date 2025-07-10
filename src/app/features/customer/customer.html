@@ -19,7 +19,9 @@
           <div *ngFor="let product of products">
             <mat-checkbox (change)="toggleProduct(product.id, $event.checked)">
               {{ product.name }}
-              --Fiyatı--
+              --
+              {{product.categoryName}}
+              --₺
               {{ product.price }}
             </mat-checkbox>
           </div>
@@ -43,7 +45,10 @@
               (change)="untoggleProduct(myProduct.id, $event.checked)"
             >
               {{ myProduct.name }}
-              --Fiyatı--
+              --
+              {{myProduct.categoryName}}
+              --
+              ₺
               {{ myProduct.price }}
             </mat-checkbox>
           </div>
