@@ -36,9 +36,8 @@ export class CustomerComponent implements OnInit {
     this.authservice.getCurrentUser().subscribe((user) => {
       this.currentUser = user;
       console.log('Giriş yapan kullanıcı:', user);
-      this.loadOwnProducts();
+      this.refreshProducts();
     });
-    this.loadProducts();
   }
   loadProducts() {
     this.http

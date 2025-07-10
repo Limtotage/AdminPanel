@@ -1,57 +1,140 @@
 <div style="padding: 1rem">
-  <div style="display: flex; justify-content: space-between;">
-    <h2>Seller Paneli</h2>
+  <div style="display: flex; justify-content: space-between">
+    <button matButton color="primary" (click)="logout()">Çıkış Yap</button>
     <button mat-button color="warn" (click)="deleteUser()">Hesabı Sil</button>
   </div>
 
-  <div style="display: flex; gap: 2rem;">
+  <div style="display: flex; gap: 2rem">
     <!-- Sol Panel -->
-    <div style="flex: 1;">
+    <div style="flex: 1">
       <h3>Tüm Ürünler</h3>
-      <div *ngFor="let product of allProducts" class="mat-elevation-z2" style="margin-bottom: 8px; padding: 8px; border: 1px solid #ccc;">
-        {{ product.name }} - {{ product.category }} - ₺{{ product.price }}
-      </div>
+      <mat-card style="max-height: 400px; overflow: auto">
+        <mat-card-content>
+          <div
+            *ngFor="let product of allProducts"
+            class="mat-elevation-z2"
+            style="margin-bottom: 8px; padding: 8px; border: 1px solid #ccc"
+          >
+            {{ product.name }} - {{ product.categoryId }} - ₺{{ product.price }}
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <!-- Sağ Panel -->
-    <div style="flex: 1;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="flex: 1">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
         <h3>Benim Ürünlerim</h3>
-        <button mat-raised-button color="primary" (click)="showNewProductForm = !showNewProductForm">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="showNewProductForm = !showNewProductForm"
+        >
           Yeni Ürün
         </button>
       </div>
 
       <!-- Yeni Ürün Formu -->
-      <div *ngIf="showNewProductForm" style="margin-top: 1rem;">
+      <div *ngIf="showNewProductForm" style="margin-top: 1rem">
         <mat-form-field appearance="fill">
           <mat-label>Ürün Adı</mat-label>
-          <input matInput [(ngModel)]="newProduct.name">
+          <input matInput [(ngModel)]="newProduct.name" />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Kategori</mat-label>
-          <input matInput [(ngModel)]="newProduct.category">
+          <input matInput [(ngModel)]="newProduct.categoryId" />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Stok</mat-label>
-          <input matInput type="number" [(ngModel)]="newProduct.stock">
+          <input matInput type="number" [(ngModel)]="newProduct.stock" />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Fiyat</mat-label>
-          <input matInput type="number" [(ngModel)]="newProduct.price">
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            min="0"
+            [(ngModel)]="newProduct.price"
+          />
         </mat-form-field>
 
-        <button mat-button color="primary" (click)="createProduct()">Kaydet</button>
+        <button mat-button color="primary" (click)="createProduct()">
+          Kaydet
+        </button>
+      </div>
+      <div *ngIf="showUpdateProductForm" style="margin-top: 1rem">
+        <mat-form-field appearance="fill">
+          <mat-label>Ürün Adı</mat-label>
+          <input matInput [(ngModel)]="updatedProduct.name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Kategori</mat-label>
+          <input matInput [(ngModel)]="updatedProduct.categoryId" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Stok</mat-label>
+          <input matInput type="number" [(ngModel)]="updatedProduct.stock" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Fiyat</mat-label>
+          <input
+            matInput
+            type="number"
+            step="0.01"
+            min="0"
+            [(ngModel)]="updatedProduct.price"
+          />
+        </mat-form-field>
+
+        <button mat-button color="primary" (click)="updateProduct()">
+          Kaydet
+        </button>
+        <button
+          mat-button
+          color="primary"
+          (click)="showUpdateProductForm = false"
+        >
+          İptal
+        </button>
+        <button mat-button color="primary" (click)="deleteProduct()">
+          Sil
+        </button>
       </div>
 
       <!-- Ürünler Listesi -->
-      <div *ngFor="let product of myProducts" class="mat-elevation-z2" style="margin-top: 8px; padding: 8px; border: 1px solid #ccc;">
-        {{ product.name }} - ₺{{ product.price }}
-        <!-- Edit yapılacaksa buraya edit icon ve dialog eklenebilir -->
-      </div>
+      <mat-card style="max-height: 400px; overflow: auto">
+        <mat-card-content>
+          <div>
+            <div
+              *ngFor="let product of myProducts"
+              class="mat-elevation-z2"
+              style="margin-top: 8px; padding: 8px; border: 1px solid #ccc"
+            >
+              {{ product.name }} -{{ product.categoryId }}- ₺{{ product.price }}
+              <button
+                matButton
+                color="primary"
+                (click)="selectProduct(product)"
+              >
+                Düzenle
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

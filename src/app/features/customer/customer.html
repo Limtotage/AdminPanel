@@ -1,8 +1,15 @@
 <div style="padding: 1rem">
-  <div style="text-align: right">
-    <button mat-button color="warn" (click)="deleteUser()">
-      Kullanıcıyı Sil
-    </button>
+  <div style="display: flex; justify-content: space-between;">
+    <div>
+      <button mat-button color="primary" (click)="logout()">
+        Çıkış Yap
+      </button>
+    </div>
+    <div>
+      <button mat-button style="color:red" (click)="deleteUser()">
+        Kullanıcıyı Sil
+      </button>
+    </div>
   </div>
   <div style="display: flex; justify-content: space-evenly">
     <div>
