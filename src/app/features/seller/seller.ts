@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
-import{MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-seller',
@@ -19,7 +19,7 @@ import{MatSelectModule} from '@angular/material/select';
     MatInputModule,
     FormsModule,
     RouterModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   templateUrl: './seller.html',
 })
@@ -39,10 +39,18 @@ export class SellerComponent implements OnInit {
     stock: 0,
     price: 0.0,
   };
+  newCategory = {
+    name: '',
+    isApproved: false,
+    productsIds: [],
+  };
+  FilteredcategoryName: String = '';
+  FilteredMycategoryName: String = '';
   selectedProductID = 0;
   currentUser: any;
   showNewProductForm = false;
   showUpdateProductForm = false;
+  showNewCategoryForm = false;
 
   constructor(
     private authservice: AuthService,
@@ -50,22 +58,24 @@ export class SellerComponent implements OnInit {
     private router: Router
   ) {}
 
-  refreshProducts() {
+  refreshAll() {
     this.loadAllProducts();
     this.loadMyProducts();
     this.loadCategories();
-
+    this.loadProductsByCategory();
+    this.loadMyProductsByCategory();
   }
   ngOnInit(): void {
     this.authservice.getCurrentUser().subscribe((user) => {
       this.currentUser = user;
-      this.refreshProducts();
+      this.refreshAll();
     });
   }
   logout() {
     localStorage.removeItem('token');
     location.href = '/login';
   }
+  //Products
   loadAllProducts() {
     this.http
       .get<any[]>('http://localhost:8080/api/product')
@@ -79,10 +89,40 @@ export class SellerComponent implements OnInit {
       )
       .subscribe((data) => (this.myProducts = data));
   }
+  loadProductsByCategory() {
+    if (this.FilteredcategoryName === '') {
+      this.loadAllProducts();
+      return;
+    }
+    this.http
+      .get<any[]>(
+        `http://localhost:8080/api/product/category/${this.FilteredcategoryName}`
+      )
+      .subscribe((data) => (this.allProducts = data));
+  }
+  loadMyProductsByCategory() {
+    if (this.FilteredMycategoryName === '') {
+      this.loadMyProducts();
+      return;
+    }
+    this.http
+      .get<any[]>(
+        `http://localhost:8080/api/product/seller/${this.currentUser.id}`
+      )
+      .subscribe((data) => {
+        this.myProducts = data.filter(
+          (p) => p.categoryName === this.FilteredMycategoryName
+        );
+      });
+  }
+
+  //categories
   loadCategories() {
     this.http
-      .get<any[]>('http://localhost:8080/api/category')
-      .subscribe((data) => (this.categories = data , console.log(this.categories)));
+      .get<any[]>('http://localhost:8080/api/category/approved')
+      .subscribe(
+        (data) => ((this.categories = data), console.log(this.categories))
+      );
   }
   selectProduct(product: any) {
     console.log(product);
@@ -100,7 +140,16 @@ export class SellerComponent implements OnInit {
       .subscribe(() => {
         alert('Ürün eklendi!');
         this.showNewProductForm = false;
-        this.refreshProducts();
+        this.refreshAll();
+      });
+  }
+  createCategory() {
+    this.http
+      .post('http://localhost:8080/api/category', this.newCategory)
+      .subscribe(() => {
+        alert('Kategori Başarıyla eklendi. Yönetici Onayı Bekleniyor.');
+        this.showNewCategoryForm = false;
+        this.refreshAll();
       });
   }
   deleteProduct() {
@@ -112,12 +161,12 @@ export class SellerComponent implements OnInit {
       .subscribe(() => {
         alert('Ürün Silindi!');
         this.showUpdateProductForm = false;
-        this.refreshProducts();
+        this.refreshAll();
       });
   }
-  getCategoryName(id:number):string{
-    const category = this.categories.find(c=>c.id===id);
-    return category ? category.name : "UnCategorized!"
+  getCategoryName(id: number): string {
+    const category = this.categories.find((c) => c.id === id);
+    return category ? category.name : 'UnCategorized!';
   }
   updateProduct() {
     this.http
@@ -128,7 +177,7 @@ export class SellerComponent implements OnInit {
       .subscribe(() => {
         alert('Ürün Düzenlendi.');
         this.showUpdateProductForm = false;
-        this.refreshProducts();
+        this.refreshAll();
       });
   }
 

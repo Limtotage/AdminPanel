@@ -1,13 +1,42 @@
 <div style="padding: 1rem">
   <div style="display: flex; justify-content: space-between">
-    <button matButton color="primary" (click)="logout()">Çıkış Yap</button>
-    <button mat-button style="color: red;" (click)="deleteUser()">Hesabı Sil</button>
+    <button mat-raised-button color="primary" (click)="logout()">
+      Çıkış Yap
+    </button>
+    <button mat-raised-button style="color: red" (click)="deleteUser()">
+      Hesabı Sil
+    </button>
   </div>
 
   <div style="display: flex; gap: 2rem">
-    <!-- Sol Panel -->
+    <!-- Sol Tüm Ürünler Bölümü-->
     <div style="flex: 1">
-      <h3>Tüm Ürünler</h3>
+      <div
+        style="
+          display: flex;
+          margin-left: 2rem;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <div>
+          <h3>Ürünler</h3>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Kategori</mat-label>
+            <mat-select
+              [(ngModel)]="FilteredcategoryName"
+              (selectionChange)="loadProductsByCategory()"
+            >
+              <mat-option [value]="''">Hepsi</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat.name">
+                {{ cat.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
       <mat-card style="max-height: 400px; overflow: auto">
         <mat-card-content>
           <div
@@ -23,7 +52,7 @@
       </mat-card>
     </div>
 
-    <!-- Sağ Panel -->
+    <!-- Sağ Benim Ürünlerim Bölümü-->
     <div style="flex: 1">
       <div
         style="
@@ -33,6 +62,20 @@
         "
       >
         <h3>Benim Ürünlerim</h3>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Kategori</mat-label>
+            <mat-select
+              [(ngModel)]="FilteredMycategoryName"
+              (selectionChange)="loadMyProductsByCategory()"
+            >
+              <mat-option [value]="''">Hepsi</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat.name">
+                {{ cat.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <button
           mat-raised-button
           color="primary"
@@ -73,11 +116,21 @@
             [(ngModel)]="newProduct.price"
           />
         </mat-form-field>
-
-        <button mat-button color="primary" (click)="createProduct()">
-          Kaydet
-        </button>
+        <div>
+          <button mat-button color="primary" (click)="createProduct()">
+            Kaydet
+          </button>
+          <button
+            mat-button
+            color="primary"
+            style="color: red"
+            (click)="showNewProductForm = false"
+          >
+            İptal
+          </button>
+        </div>
       </div>
+      <!-- Ürün Düzenleme Formu -->
       <div *ngIf="showUpdateProductForm" style="margin-top: 1rem">
         <mat-form-field appearance="fill">
           <mat-label>Ürün Adı</mat-label>
@@ -109,19 +162,27 @@
           />
         </mat-form-field>
 
-        <button mat-button color="primary" (click)="updateProduct()">
-          Kaydet
-        </button>
-        <button
-          mat-button
-          color="primary"
-          (click)="showUpdateProductForm = false"
-        >
-          İptal
-        </button>
-        <button mat-button color="primary" (click)="deleteProduct()">
-          Sil
-        </button>
+        <div>
+          <button mat-button color="primary" (click)="updateProduct()">
+            Kaydet
+          </button>
+          <button
+            mat-button
+            color="primary"
+            style="color: orange"
+            (click)="showUpdateProductForm = false"
+          >
+            İptal
+          </button>
+          <button
+            mat-button
+            color="primary"
+            style="color: red"
+            (click)="deleteProduct()"
+          >
+            Sil
+          </button>
+        </div>
       </div>
 
       <!-- Ürünler Listesi -->
@@ -148,5 +209,40 @@
         </mat-card-content>
       </mat-card>
     </div>
+  </div>
+  <div style="display: flex; justify-content: center">
+    <button
+      mat-raised-button
+      color="primary"
+      style="color: orange; margin-top: 2rem"
+      (click)="showNewCategoryForm = !showNewCategoryForm"
+    >
+      Kategori Ekle
+    </button>
+  </div>
+  <div
+    *ngIf="showNewCategoryForm"
+    style="display: flex; margin-top: 1rem; justify-content: center"
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Kategori Adı</mat-label>
+      <input matInput [(ngModel)]="newCategory.name" />
+    </mat-form-field>
+    <button
+      matButton
+      color="primary"
+      style="color: blue"
+      (click)="createCategory()"
+    >
+      Ekle
+    </button>
+    <button
+      matButton
+      color="primary"
+      style="color: red"
+      (click)="showNewCategoryForm = false; newCategory.name = ''"
+    >
+      İptal
+    </button>
   </div>
 </div>

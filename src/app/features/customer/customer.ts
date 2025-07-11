@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-customer',
@@ -14,8 +16,10 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     RouterModule,
     MatCheckboxModule,
+    FormsModule,
     MatButtonModule,
     MatCardModule,
+    MatSelectModule,
   ],
   templateUrl: './customer.html',
 })
@@ -23,13 +27,18 @@ export class CustomerComponent implements OnInit {
   products: any[] = [];
   myProducts: any[] = [];
   currentUser: any;
+  categories: any[] = [];
   selectedProductIds: Set<number> = new Set();
   UnselectProductIds: Set<number> = new Set();
+  FilteredProductCategoryName: String = '';
+  FilteredOwnProductCategoryName: String = '';
 
   constructor(private authservice: AuthService, private http: HttpClient) {}
   refreshProducts() {
     this.loadProducts();
     this.loadOwnProducts();
+    this.loadCategories();
+    this.loadProductsByCategory();
   }
 
   ngOnInit(): void {
@@ -39,6 +48,13 @@ export class CustomerComponent implements OnInit {
       this.refreshProducts();
     });
   }
+  loadCategories() {
+    this.http
+      .get<any[]>('http://localhost:8080/api/category/approved')
+      .subscribe(
+        (data) => ((this.categories = data), console.log(this.categories))
+      );
+  }
   loadProducts() {
     this.http
       .get<any[]>('http://localhost:8080/api/product')
@@ -46,12 +62,37 @@ export class CustomerComponent implements OnInit {
   }
 
   loadOwnProducts() {
-    console.log(this.currentUser.id);
     this.http
       .get<any[]>(
         `http://localhost:8080/api/product/customer/${this.currentUser.id}`
       )
       .subscribe((data) => (this.myProducts = data));
+  }
+  loadProductsByCategory() {
+    if (this.FilteredProductCategoryName === '') {
+      this.loadProducts();
+      return;
+    }
+    this.http
+      .get<any[]>(
+        `http://localhost:8080/api/product/category/${this.FilteredProductCategoryName}`
+      )
+      .subscribe((data) => (this.products = data));
+  }
+  loadOwnProductsByCategory() {
+    if (this.FilteredOwnProductCategoryName === '') {
+      this.loadOwnProducts();
+      return;
+    }
+    this.http
+      .get<any[]>(
+        `http://localhost:8080/api/product/customer/${this.currentUser.id}`
+      )
+      .subscribe((data) => {
+        this.myProducts = data.filter(
+          p=>p.categoryName === this.FilteredOwnProductCategoryName
+        )
+      });
   }
   toggleProduct(id: number, checked: boolean) {
     if (checked) this.selectedProductIds.add(id);
