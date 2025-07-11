@@ -1,5 +1,5 @@
 🧾 Bugünkü Hedefler:
-✅ 1. Seller Panel Tamamlandı.
+✅ 1. Seller Panel                                                               ------------------Tamamlandı.
 
     🔘 "Add Category" sekmesi
 
@@ -15,7 +15,7 @@
 
         Endpoint: GET /api/category/approved gibi olmalı
 
-✅ 2. Customer ve Seller Panel – Kategoriye Göre Ürün Filtreleme Tamamlandı.
+✅ 2. Customer ve Seller Panel –                                             --------- Tamamlandı.
 
     🔘 Kategori dropdown/select ekle
 
@@ -25,7 +25,7 @@
 
     🔘 Customer ve Seller panelde bu özellik kullanılabilir olmalı
 
-✅ 3. Admin Panel Geliştirme
+✅ 3. Admin Panel Geliştirme                                                 ------------ Tamamlandı
 
     🔘 Tüm kategorileri görüntüleme + onaylama butonu
 
@@ -36,10 +36,11 @@
     🔘 Tüm kullanıcılar ve ürünleri görüntüleme + silme
 
         Seller, Customer, Product listesi + DELETE işlemleri
+        Get Seller and Him Own Products
 
     🔘 Admin hesabı silme butonu (zaten vardı, kontrol et)
 
-⏳ 4. Zaman Kalırsa – Görsellik
+⏳ 4. Zaman Kalırsa – Görsellik                                      --------- Admin Panel fena olmadı Diğer Paneller Yarıda Kaldı.
 
     🔘 Butonlara renk ve ikonlar
 

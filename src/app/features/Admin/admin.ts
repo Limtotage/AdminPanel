@@ -1,17 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.html',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    FormsModule,
+    RouterModule,
+    MatSelectModule,
+    MatTableModule,
+  ],
+  styleUrls: ['./admin.scss'],
 })
 export class AdminComponent implements OnInit {
+  displayedColumns: string[] = [
+    'id',
+    'fullName',
+    'username',
+    'products',
+    'actions',
+  ];
   products: any[] = [];
-  users: any[] = [];
-  pendingCategories: any[] = [];
+  sellers: any[] = [];
+  customers: any[] = [];
+  categories: any[] = [];
+  pendingCategory: any[] = [];
+
+  ApprovedDTO = {
+    isApproved: true,
+  };
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -19,11 +48,16 @@ export class AdminComponent implements OnInit {
     localStorage.removeItem('token');
     location.href = '/login';
   }
+  refreshAll() {
+    this.loadProducts();
+    this.loadSellers();
+    this.loadCustomers();
+    this.loadUnapprovedCategory();
+    this.loadCategories();
+  }
 
   ngOnInit(): void {
-    this.loadProducts();
-    this.loadUsers();
-    this.loadPendingCategories();
+    this.refreshAll();
   }
 
   loadProducts() {
@@ -32,42 +66,81 @@ export class AdminComponent implements OnInit {
       .subscribe((data) => (this.products = data));
   }
 
-  loadUsers() {
+  loadSellers() {
     this.http
-      .get<any[]>('http://localhost:8080/api/users')
-      .subscribe((data) => (this.users = data));
+      .get<any[]>('http://localhost:8080/api/seller')
+      .subscribe((data) => {
+        this.sellers = data;
+      });
+  }
+  loadCustomers() {
+    this.http
+      .get<any[]>('http://localhost:8080/api/customer')
+      .subscribe((data) => ((this.customers = data), console.log(data)));
   }
 
-  loadPendingCategories() {
+  loadUnapprovedCategory() {
     this.http
-      .get<any[]>('http://localhost:8080/api/admin/category/pending')
-      .subscribe((data) => (this.pendingCategories = data));
+      .get<any[]>('http://localhost:8080/api/category/unapproved')
+      .subscribe((data) => (this.pendingCategory = data));
+  }
+  loadCategories() {
+    this.http
+      .get<any[]>('http://localhost:8080/api/category')
+      .subscribe((data) => ((this.categories = data), console.log(data)));
   }
 
   deleteProduct(id: number) {
     this.http
-      .delete(`http://localhost:8080/api/admin/product/${id}`)
+      .delete(`http://localhost:8080/api/product/${id}`, {
+        responseType: 'text',
+      })
       .subscribe(() => {
         alert('Ürün silindi');
-        this.loadProducts();
+        this.refreshAll();
+      });
+  }
+  deleteCategory(id: number) {
+    this.http
+      .delete(`http://localhost:8080/api/category/${id}`, {
+        responseType: 'text',
+      })
+      .subscribe(() => {
+        alert('Kategori Silindi.');
+        this.refreshAll();
       });
   }
 
-  deleteUser(id: number) {
+  deleteSeller(id: number) {
     this.http
-      .delete(`http://localhost:8080/api/admin/user/${id}`)
+      .delete(`http://localhost:8080/api/seller/admin/${id}`, {
+        responseType: 'text',
+      })
       .subscribe(() => {
-        alert('Kullanıcı silindi');
-        this.loadUsers();
+        alert('Satıcı silindi');
+        this.refreshAll();
+      });
+  }
+  deleteCustomer(id: number) {
+    this.http
+      .delete(`http://localhost:8080/api/customer/admin/${id}`, {
+        responseType: 'text',
+      })
+      .subscribe(() => {
+        alert('Müşteri silindi');
+        this.refreshAll();
       });
   }
 
   approveCategory(id: number) {
     this.http
-      .put(`http://localhost:8080/api/admin/category/approve/${id}`, {})
+      .put(
+        `http://localhost:8080/api/category/unapproved/${id}`,
+        this.ApprovedDTO
+      )
       .subscribe(() => {
         alert('Kategori onaylandı');
-        this.loadPendingCategories();
+        this.refreshAll();
       });
   }
 

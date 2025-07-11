@@ -153,7 +153,6 @@ export class SellerComponent implements OnInit {
       });
   }
   deleteProduct() {
-    console.log(this.selectedProductID);
     this.http
       .delete(`http://localhost:8080/api/product/${this.selectedProductID}`, {
         responseType: 'text',
