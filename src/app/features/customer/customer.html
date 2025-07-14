@@ -37,19 +37,24 @@
           </mat-form-field>
         </div>
       </div>
-      <mat-card style="max-height: 400px; overflow: auto">
-        <mat-card-content>
-          <div *ngFor="let product of products">
-            <mat-checkbox (change)="toggleProduct(product.id, $event.checked)">
-              {{ product.name }}
-              --
-              {{ product.categoryName }}
-              --₺
-              {{ product.price }}
-            </mat-checkbox>
-          </div>
-        </mat-card-content>
-      </mat-card>
+      <div>
+        <mat-card style="max-height: 400px; overflow: auto">
+          <mat-card-content>
+            <div *ngFor="let product of products">
+              <mat-checkbox
+                (change)="toggleProduct(product.id, $event.checked)"
+              >
+                {{ product.name }}
+                --
+                {{ product.categoryName }}
+                --₺
+                {{ product.price }}
+              </mat-checkbox>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
       <button
         mat-raised-button
         color="primary"
@@ -68,7 +73,7 @@
           align-items: center;
         "
       >
-        <div style="margin-right: 1rem;">
+        <div style="margin-right: 1rem">
           <h2>Seçilen Ürün Listesi</h2>
         </div>
         <div>

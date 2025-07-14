@@ -115,6 +115,12 @@ export class SellerComponent implements OnInit {
         );
       });
   }
+  clearArea(){
+    this.newProduct.categoryName='';
+    this.newProduct.name= '';
+    this.newProduct.stock= 0;
+    this.newProduct.price= 0.0;
+  }
 
   //categories
   loadCategories() {
@@ -141,6 +147,7 @@ export class SellerComponent implements OnInit {
         alert('Ürün eklendi!');
         this.showNewProductForm = false;
         this.refreshAll();
+        this.clearArea();
       });
   }
   createCategory() {
