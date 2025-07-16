@@ -40,16 +40,63 @@
       <div>
         <mat-card style="max-height: 400px; overflow: auto">
           <mat-card-content>
-            <div *ngFor="let product of products">
-              <mat-checkbox
-                (change)="toggleProduct(product.id, $event.checked)"
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1rem;
+              "
+            >
+              <div
+                *ngFor="let product of products"
+                style="
+                  border: 1px solid #ccc;
+                  padding: 1rem;
+                  border-radius: 8px;
+                  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+                "
               >
-                {{ product.name }}
-                --
-                {{ product.categoryName }}
-                --₺
-                {{ product.price }}
-              </mat-checkbox>
+                <h3>{{ product.name }}</h3>
+                <p>
+                  <strong>₺{{ product.price }}</strong>
+                </p>
+
+                <div style="display: flex; align-items: center; gap: 0.5rem">
+                <button
+                  mat-mini-button
+                  color="primary"
+                  (click)="decreaseQuantity(product)"
+                >
+                  -
+                </button>
+
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="product.quantity"
+                  class="no-spinner"
+                  min="1"
+                  style="width: 60px; text-align: center"
+                />
+
+                <button
+                  mat-mini-button
+                  color="primary"
+                  (click)="increaseQuantity(product)"
+                >
+                  +
+                </button>
+                </div>
+
+                <button
+                  mat-raised-button
+                  color="accent"
+                  style="margin-top: 1rem; width: 100%"
+                  (click)="addToCart(product)"
+                >
+                  Sepete Ekle
+                </button>
+              </div>
             </div>
           </mat-card-content>
         </mat-card>
@@ -93,16 +140,66 @@
       </div>
       <mat-card style="max-height: 400px; overflow: auto">
         <mat-card-content>
-          <div *ngFor="let myProduct of myProducts">
-            <mat-checkbox
-              (change)="untoggleProduct(myProduct.id, $event.checked)"
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+              gap: 1rem;
+            "
+          >
+            <div
+              *ngFor="let item of myCartItems"
+              style="
+                border: 1px solid #ccc;
+                padding: 1rem;
+                border-radius: 8px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+              "
             >
-              {{ myProduct.name }}
-              --
-              {{ myProduct.categoryName }}
-              -- ₺
-              {{ myProduct.price }}
-            </mat-checkbox>
+              <h3>{{ item.productName }}</h3>
+              <p>
+                <strong>₺{{ item.productPrice * item.quantity }}</strong>
+              </p>
+              <p>
+                <strong>adet {{ item.quantity }}</strong>
+              </p>
+
+              <div style="display: flex; align-items: center; gap: 0.5rem">
+                <button
+                  mat-mini-button
+                  color="primary"
+                  (click)="decreaseQuantityfromCart(item)"
+                >
+                  -
+                </button>
+
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="item.quantity"
+                  class="no-spinner"
+                  min="1"
+                  style="width: 60px; text-align: center"
+                />
+
+                <button
+                  mat-mini-button
+                  color="primary"
+                  (click)="increaseQuantityfromCart(item)"
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                mat-raised-button
+                color="accent"
+                style="margin-top: 1rem; width: 100%"
+                (click)="removeItemFromCard()"
+              >
+                Sepetten Çıkar
+              </button>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>

@@ -25,10 +25,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class CustomerComponent implements OnInit {
   products: any[] = [];
-  myProducts: any[] = [];
+  myCartItems: any[] = [];
   currentUser: any;
   categories: any[] = [];
-  selectedProductIds: Set<number> = new Set();
+  selectedProduct = {
+    productId: 0,
+    quantity: 0,
+  };
   UnselectProductIds: Set<number> = new Set();
   FilteredProductCategoryName: String = '';
   FilteredOwnProductCategoryName: String = '';
@@ -36,7 +39,7 @@ export class CustomerComponent implements OnInit {
   constructor(private authservice: AuthService, private http: HttpClient) {}
   refreshProducts() {
     this.loadProducts();
-    this.loadOwnProducts();
+    this.loadCart();
     this.loadCategories();
     this.loadProductsByCategory();
   }
@@ -51,27 +54,36 @@ export class CustomerComponent implements OnInit {
   loadCategories() {
     this.http
       .get<any[]>('http://localhost:8080/api/category/approved')
-      .subscribe(
-        (data) => ((this.categories = data))
-      );
+      .subscribe((data) => (this.categories = data));
   }
+  untoggleProduct() {}
   loadProducts() {
     this.http
       .get<any[]>('http://localhost:8080/api/product')
-      .subscribe((data) => (this.products = data));
+      .subscribe(
+        (data) => (this.products = data.map((p) => ({ ...p, quantity: 1 })))
+      );
   }
-  loadCardByCustomer(){
+  loadCardByCustomer() {
     this.http
-        .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
-        .subscribe((data)=>(console.log(data)));
+      .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
+      .subscribe((data) => console.log(data));
   }
-  loadOwnProducts() {
-    // this.http
-    //   .get<any[]>(
-    //     `http://localhost:8080/api/product/customer/${this.currentUser.id}`
-    //   )
-    //   .subscribe((data) => (this.myProducts = data));
+  loadCart() {
+    this.http
+      .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
+      .subscribe((data) => {
+        this.myCartItems = data.sort((a, b) => a.id - b.id)
+      });
   }
+  loadCartSorted() {
+    this.http
+      .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
+      .subscribe((data) => {
+        this.myCartItems = data.sort((a, b) => a.id - b.id); // ID'ye göre sırala
+      });
+  }
+  removeItemFromCard() {}
   loadProductsByCategory() {
     if (this.FilteredProductCategoryName === '') {
       this.loadProducts();
@@ -97,14 +109,6 @@ export class CustomerComponent implements OnInit {
     //       p=>p.categoryName === this.FilteredOwnProductCategoryName
     //     )
     //   });
-  }
-  toggleProduct(id: number, checked: boolean) {
-    if (checked) this.selectedProductIds.add(id);
-    else this.selectedProductIds.delete(id);
-  }
-  untoggleProduct(id: number, checked: boolean) {
-    if (checked) this.UnselectProductIds.add(id);
-    else this.UnselectProductIds.delete(id);
   }
   submitSelectedProducts() {
     // const selectedIds = Array.from(this.selectedProductIds);
@@ -134,6 +138,19 @@ export class CustomerComponent implements OnInit {
     //     this.UnselectProductIds = new Set();
     //   });
   }
+  addToCart(product: any) {
+    this.selectedProduct.quantity = product.quantity;
+    this.selectedProduct.productId = product.id;
+    this.http
+      .post(
+        `http://localhost:8080/api/cart/add/${this.currentUser.id}`,
+        this.selectedProduct
+      )
+      .subscribe(() => {
+        alert('Seçili Ürün Sepete Eklenmiştir.');
+        this.refreshProducts();
+      });
+  }
   deleteUser() {
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
       this.http
@@ -146,6 +163,25 @@ export class CustomerComponent implements OnInit {
           location.href = '/login';
         });
     }
+  }
+  decreaseQuantity(product: any) {
+    if (product.quantity > 1) product.quantity -= 1;
+  }
+  increaseQuantity(product: any) {
+    product.quantity += 1;
+  }
+  decreaseQuantityfromCart(item: any) {
+    console.log(item);
+    if (item.quantity > 1) {
+      this.http
+        .put(`http://localhost:8080/api/cart-items/decrease/${item.id}`, null)
+        .subscribe(() => this.loadCartSorted());
+    }
+  }
+  increaseQuantityfromCart(item: any) {
+    this.http
+      .put(`http://localhost:8080/api/cart-items/increase/${item.id}`, null)
+      .subscribe(() => this.loadCartSorted());
   }
   logout() {
     localStorage.removeItem('token');
