@@ -52,7 +52,7 @@ export class CustomerComponent implements OnInit {
     this.http
       .get<any[]>('http://localhost:8080/api/category/approved')
       .subscribe(
-        (data) => ((this.categories = data), console.log(this.categories))
+        (data) => ((this.categories = data))
       );
   }
   loadProducts() {
@@ -60,13 +60,17 @@ export class CustomerComponent implements OnInit {
       .get<any[]>('http://localhost:8080/api/product')
       .subscribe((data) => (this.products = data));
   }
-
-  loadOwnProducts() {
+  loadCardByCustomer(){
     this.http
-      .get<any[]>(
-        `http://localhost:8080/api/product/customer/${this.currentUser.id}`
-      )
-      .subscribe((data) => (this.myProducts = data));
+        .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
+        .subscribe((data)=>(console.log(data)));
+  }
+  loadOwnProducts() {
+    // this.http
+    //   .get<any[]>(
+    //     `http://localhost:8080/api/product/customer/${this.currentUser.id}`
+    //   )
+    //   .subscribe((data) => (this.myProducts = data));
   }
   loadProductsByCategory() {
     if (this.FilteredProductCategoryName === '') {
@@ -80,19 +84,19 @@ export class CustomerComponent implements OnInit {
       .subscribe((data) => (this.products = data));
   }
   loadOwnProductsByCategory() {
-    if (this.FilteredOwnProductCategoryName === '') {
-      this.loadOwnProducts();
-      return;
-    }
-    this.http
-      .get<any[]>(
-        `http://localhost:8080/api/product/customer/${this.currentUser.id}`
-      )
-      .subscribe((data) => {
-        this.myProducts = data.filter(
-          p=>p.categoryName === this.FilteredOwnProductCategoryName
-        )
-      });
+    // if (this.FilteredOwnProductCategoryName === '') {
+    //   this.loadOwnProducts();
+    //   return;
+    // }
+    // this.http
+    //   .get<any[]>(
+    //     `http://localhost:8080/api/product/customer/${this.currentUser.id}`
+    //   )
+    //   .subscribe((data) => {
+    //     this.myProducts = data.filter(
+    //       p=>p.categoryName === this.FilteredOwnProductCategoryName
+    //     )
+    //   });
   }
   toggleProduct(id: number, checked: boolean) {
     if (checked) this.selectedProductIds.add(id);
@@ -103,32 +107,32 @@ export class CustomerComponent implements OnInit {
     else this.UnselectProductIds.delete(id);
   }
   submitSelectedProducts() {
-    const selectedIds = Array.from(this.selectedProductIds);
-    console.log(selectedIds);
-    this.http
-      .put(
-        `http://localhost:8080/api/customer/addProduct/${this.currentUser.id}`,
-        selectedIds
-      )
-      .subscribe(() => {
-        alert('Seçili Ürünler Eklenmiştir.');
-        this.refreshProducts();
-        this.selectedProductIds = new Set();
-      });
+    // const selectedIds = Array.from(this.selectedProductIds);
+    // console.log(selectedIds);
+    // this.http
+    //   .put(
+    //     `http://localhost:8080/api/customer/addProduct/${this.currentUser.id}`,
+    //     selectedIds
+    //   )
+    //   .subscribe(() => {
+    //     alert('Seçili Ürünler Eklenmiştir.');
+    //     this.refreshProducts();
+    //     this.selectedProductIds = new Set();
+    //   });
   }
   removeProductFromList() {
-    const selectedIds = Array.from(this.UnselectProductIds);
-    console.log('Removed Ids: ' + selectedIds);
-    this.http
-      .put(
-        `http://localhost:8080/api/customer/removeProduct/${this.currentUser.id}`,
-        selectedIds
-      )
-      .subscribe(() => {
-        alert('Seçili Ürünler Kaldırılmıştır.');
-        this.refreshProducts();
-        this.UnselectProductIds = new Set();
-      });
+    // const selectedIds = Array.from(this.UnselectProductIds);
+    // console.log('Removed Ids: ' + selectedIds);
+    // this.http
+    //   .put(
+    //     `http://localhost:8080/api/customer/removeProduct/${this.currentUser.id}`,
+    //     selectedIds
+    //   )
+    //   .subscribe(() => {
+    //     alert('Seçili Ürünler Kaldırılmıştır.');
+    //     this.refreshProducts();
+    //     this.UnselectProductIds = new Set();
+    //   });
   }
   deleteUser() {
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
