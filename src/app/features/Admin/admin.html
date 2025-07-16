@@ -31,7 +31,7 @@
                   <td>{{ p.id }}</td>
                   <td>{{ p.name }}</td>
                   <td>{{ p.categoryName }}</td>
-                  <td>{{ p.stock }}</td>
+                  <td>{{ p.productStock }}</td>
                   <td>{{ p.price }}</td>
                   <td>
                     <button class="danger" (click)="deleteProduct(p.id)">
@@ -100,7 +100,6 @@
                   <td>{{ c.id }}</td>
                   <td>{{ c.username }}</td>
                   <td>{{ c.fullname }}</td>
-                  <td>{{ c.productsIds }}</td>
                   <td>
                     <button class="danger" (click)="deleteCustomer(c.id)">
                       Sil

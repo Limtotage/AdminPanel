@@ -103,7 +103,7 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Stok</mat-label>
-          <input matInput type="number" [(ngModel)]="newProduct.stock" />
+          <input matInput type="number" [(ngModel)]="newProduct.productStock" />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -148,7 +148,7 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Stok</mat-label>
-          <input matInput type="number" [(ngModel)]="updatedProduct.stock" />
+          <input matInput type="number" [(ngModel)]="updatedProduct.productStock" />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -196,7 +196,7 @@
             >
               {{ product.name }} -{{ product.categoryName }}- ₺{{
                 product.price
-              }}
+              }} --- {{product.productStock}}
               <button
                 matButton
                 color="primary"

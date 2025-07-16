@@ -30,13 +30,13 @@ export class SellerComponent implements OnInit {
   newProduct = {
     name: '',
     categoryName: '',
-    stock: 0,
+    productStock: 0,
     price: 0.0,
   };
   updatedProduct = {
     name: '',
     categoryName: '',
-    stock: 0,
+    productStock: 0,
     price: 0.0,
   };
   newCategory = {
@@ -118,7 +118,7 @@ export class SellerComponent implements OnInit {
   clearArea(){
     this.newProduct.categoryName='';
     this.newProduct.name= '';
-    this.newProduct.stock= 0;
+    this.newProduct.productStock= 0;
     this.newProduct.price= 0.0;
   }
 
@@ -127,14 +127,13 @@ export class SellerComponent implements OnInit {
     this.http
       .get<any[]>('http://localhost:8080/api/category/approved')
       .subscribe(
-        (data) => ((this.categories = data), console.log(this.categories))
+        (data) => ((this.categories = data))
       );
   }
   selectProduct(product: any) {
-    console.log(product);
     this.updatedProduct.name = product.name;
     this.updatedProduct.price = product.price;
-    this.updatedProduct.stock = product.stock;
+    this.updatedProduct.productStock = product.productStock;
     this.updatedProduct.categoryName = product.categoryName;
     this.selectedProductID = product.id;
     this.showUpdateProductForm = !this.showUpdateProductForm;
