@@ -87,7 +87,7 @@ export class AdminComponent implements OnInit {
   loadCategories() {
     this.http
       .get<any[]>('http://localhost:8080/api/category')
-      .subscribe((data) => ((this.categories = data), console.log(data)));
+      .subscribe((data) => ((this.categories = data)));
   }
 
   deleteProduct(id: number) {

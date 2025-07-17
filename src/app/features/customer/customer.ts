@@ -79,6 +79,7 @@ export class CustomerComponent implements OnInit {
     this.http
       .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
       .subscribe((data) => {
+        console.log(data);
         this.myCartItems = data.sort((a, b) => a.id - b.id);
       });
   }
@@ -103,49 +104,21 @@ export class CustomerComponent implements OnInit {
       )
       .subscribe((data) => (this.products = data));
   }
-  loadOwnProductsByCategory() {
-    // if (this.FilteredOwnProductCategoryName === '') {
-    //   this.loadOwnProducts();
-    //   return;
-    // }
-    // this.http
-    //   .get<any[]>(
-    //     `http://localhost:8080/api/product/customer/${this.currentUser.id}`
-    //   )
-    //   .subscribe((data) => {
-    //     this.myProducts = data.filter(
-    //       p=>p.categoryName === this.FilteredOwnProductCategoryName
-    //     )
-    //   });
+  loadOwnCartItemsByCategory() {
+    if (this.FilteredOwnProductCategoryName === '') {
+      this.loadCartItems();
+      return;
+    }
+
+    this.http
+      .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
+      .subscribe((data) => {
+         this.myCartItems = data.filter(
+           p=>p.categoryName === this.FilteredOwnProductCategoryName
+         )
+      });
   }
-  submitSelectedProducts() {
-    // const selectedIds = Array.from(this.selectedProductIds);
-    // console.log(selectedIds);
-    // this.http
-    //   .put(
-    //     `http://localhost:8080/api/customer/addProduct/${this.currentUser.id}`,
-    //     selectedIds
-    //   )
-    //   .subscribe(() => {
-    //     alert('Seçili Ürünler Eklenmiştir.');
-    //     this.refreshProducts();
-    //     this.selectedProductIds = new Set();
-    //   });
-  }
-  removeProductFromList() {
-    // const selectedIds = Array.from(this.UnselectProductIds);
-    // console.log('Removed Ids: ' + selectedIds);
-    // this.http
-    //   .put(
-    //     `http://localhost:8080/api/customer/removeProduct/${this.currentUser.id}`,
-    //     selectedIds
-    //   )
-    //   .subscribe(() => {
-    //     alert('Seçili Ürünler Kaldırılmıştır.');
-    //     this.refreshProducts();
-    //     this.UnselectProductIds = new Set();
-    //   });
-  }
+
   addToCart(product: any) {
     this.selectedProduct.quantity = product.quantity;
     this.selectedProduct.productId = product.id;
@@ -169,12 +142,13 @@ export class CustomerComponent implements OnInit {
         });
   }
   confirmCart(){
-    this.http
-        .delete(`http://localhost:8080/api/cart/confirm/${this.currentUser.id}`,({responseType:"text"}))
-        .subscribe(()=>{
-          alert("Siparaişiniz Alındı.");
-          this.refreshCart();
-        });
+    location.href = '/payment';
+    // this.http
+    //     .delete(`http://localhost:8080/api/cart/confirm/${this.currentUser.id}`,({responseType:"text"}))
+    //     .subscribe(()=>{
+    //       alert("Siparaişiniz Alındı.");
+    //       this.refreshCart();
+    //     });
   }
   deleteUser() {
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {

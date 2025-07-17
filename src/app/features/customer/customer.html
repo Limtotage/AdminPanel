@@ -101,15 +101,6 @@
           </mat-card-content>
         </mat-card>
       </div>
-
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="submitSelectedProducts()"
-        style="margin-top: 1rem"
-      >
-        Ürünleri Ekle
-      </button>
     </div>
     <!--Seçilen Ürünler Listesi-->
     <div>
@@ -128,7 +119,7 @@
             <mat-label>Kategori</mat-label>
             <mat-select
               [(ngModel)]="FilteredOwnProductCategoryName"
-              (selectionChange)="loadOwnProductsByCategory()"
+              (selectionChange)="loadOwnCartItemsByCategory()"
             >
               <mat-option [value]="''"> Hepsi </mat-option>
               <mat-option *ngFor="let cat of categories" [value]="cat.name">

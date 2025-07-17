@@ -1,0 +1,86 @@
+<h2>Ödeme Bilgileri</h2>
+
+<form (ngSubmit)="submitPayment()" #paymentForm="ngForm">
+  <!-- Kart Numarası -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Kart Numarası</mat-label>
+    <input
+      matInput
+      type="text"
+      name="cardNumber"
+      [(ngModel)]="paymentData.cardNumber"
+      required
+    />
+  </mat-form-field>
+
+  <!-- Kart Üzerindeki İsim -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Kart Üzerindeki İsim</mat-label>
+    <input
+      matInput
+      type="text"
+      name="cardHolderName"
+      [(ngModel)]="paymentData.cardHolderName"
+      required
+    />
+  </mat-form-field>
+
+  <!-- Tarih ve CVC -->
+  <div style="display: flex; gap: 12px;">
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Ay</mat-label>
+      <input
+        matInput
+        type="text"
+        name="expiryMonth"
+        [(ngModel)]="paymentData.expiryMonth"
+        required
+        maxlength="2"
+        placeholder="MM"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Yıl</mat-label>
+      <input
+        matInput
+        type="text"
+        name="expiryYear"
+        [(ngModel)]="paymentData.expiryYear"
+        required
+        maxlength="4"
+        placeholder="YYYY"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>CVC</mat-label>
+      <input
+        matInput
+        type="text"
+        name="cvc"
+        [(ngModel)]="paymentData.cvc"
+        required
+        maxlength="4"
+        placeholder="123"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="paymentForm.invalid"
+  >
+    Ödemeyi Tamamla
+  </button>
+</form>
+
+<!-- Sonuç Mesajı -->
+<div *ngIf="message" style="margin-top: 20px;">
+  <p>{{ message }}</p>
+  <p *ngIf="totalPaid">Toplam Tutar: {{ totalPaid | currency:'TRY' }}</p>
+  <p *ngIf="paymentDate">Tarih: {{ paymentDate | date:'short' }}</p>
+</div>

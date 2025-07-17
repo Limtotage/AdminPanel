@@ -8,11 +8,18 @@ import { UsersComponent } from './features/users/users';
 import { AuthGuard } from './core/auth/auth-guard';
 import { RoleGuard } from './services/role-guard';
 import { RegisterComponent } from './features/register/register';
+import { PaymentComponent } from './features/payment/payment';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  {
+    path: 'payment',
+    canActivate: [RoleGuard],
+    data: { role: 'CUSTOMER' },
+    component: PaymentComponent,
+  },
   {
     path: 'admin',
     component: AdminComponent,
