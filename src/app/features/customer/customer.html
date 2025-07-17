@@ -160,6 +160,10 @@
               <p>
                 <strong>₺{{ item.productPrice * item.quantity }}</strong>
               </p>
+              <p [ngStyle]="{'color': getStockColor(item.stockStatus)}">
+                {{item.stockStatus}} <br/>
+                <span *ngIf="item.stockStatus==='LOW_STOCK'"> Son {{item.stockQuantity}} ürün kaldı.</span>
+              </p>
               <p>
                 <strong>adet {{ item.quantity }}</strong>
               </p>
@@ -195,7 +199,7 @@
                 mat-raised-button
                 color="accent"
                 style="margin-top: 1rem; width: 100%"
-                (click)="removeItemFromCard()"
+                (click)="removeItemFromCard(item)"
               >
                 Sepetten Çıkar
               </button>
@@ -203,6 +207,9 @@
           </div>
         </mat-card-content>
       </mat-card>
+      <p >
+        <strong> Toplam Sepet Tutarı {{myCart.totalPrice}}</strong>
+      </p>
       <button
         mat-raised-button
         color="primary"
@@ -210,14 +217,6 @@
         style="margin-top: 1rem"
       >
         Seçilenleri Kaldır
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="loadCardByCustomer()"
-        style="margin-top: 1rem"
-      >
-        Card Controller test Get By ID
       </button>
     </div>
   </div>

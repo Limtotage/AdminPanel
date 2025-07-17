@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 export class CustomerComponent implements OnInit {
   products: any[] = [];
   myCartItems: any[] = [];
+  myCart:any=[];
   currentUser: any;
   categories: any[] = [];
   selectedProduct = {
@@ -39,9 +40,14 @@ export class CustomerComponent implements OnInit {
   constructor(private authservice: AuthService, private http: HttpClient) {}
   refreshProducts() {
     this.loadProducts();
-    this.loadCart();
+    this.loadCartItems();
     this.loadCategories();
     this.loadProductsByCategory();
+    this.loadCart();
+  }
+  refreshCart(){
+    this.loadCart();
+    this.loadCartItems();
   }
 
   ngOnInit(): void {
@@ -64,26 +70,28 @@ export class CustomerComponent implements OnInit {
         (data) => (this.products = data.map((p) => ({ ...p, quantity: 1 })))
       );
   }
-  loadCardByCustomer() {
-    this.http
-      .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
-      .subscribe((data) => console.log(data));
-  }
   loadCart() {
     this.http
-      .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
-      .subscribe((data) => {
-        this.myCartItems = data.sort((a, b) => a.id - b.id)
-      });
+      .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
+      .subscribe((data) => (this.myCart=data , console.log(data)));
   }
-  loadCartSorted() {
+  loadCartItems() {
     this.http
       .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
       .subscribe((data) => {
-        this.myCartItems = data.sort((a, b) => a.id - b.id); // ID'ye göre sırala
+        this.myCartItems = data.sort((a, b) => a.id - b.id);
       });
   }
-  removeItemFromCard() {}
+  removeItemFromCard(item: any) {
+    this.http
+      .delete(`http://localhost:8080/api/cart-items/remove/${item.id}`, {
+        responseType: 'text',
+      })
+      .subscribe(() => {
+        this.refreshCart();
+        alert('Item Removed from Cart.');
+      });
+  }
   loadProductsByCategory() {
     if (this.FilteredProductCategoryName === '') {
       this.loadProducts();
@@ -171,20 +179,31 @@ export class CustomerComponent implements OnInit {
     product.quantity += 1;
   }
   decreaseQuantityfromCart(item: any) {
-    console.log(item);
     if (item.quantity > 1) {
       this.http
         .put(`http://localhost:8080/api/cart-items/decrease/${item.id}`, null)
-        .subscribe(() => this.loadCartSorted());
+        .subscribe(() => this.refreshCart());
     }
   }
   increaseQuantityfromCart(item: any) {
     this.http
       .put(`http://localhost:8080/api/cart-items/increase/${item.id}`, null)
-      .subscribe(() => this.loadCartSorted());
+      .subscribe(() => this.refreshCart());
   }
   logout() {
     localStorage.removeItem('token');
     location.href = '/login';
+  }
+  getStockColor(status: string): string {
+    switch (status) {
+      case 'IN_STOCK':
+        return 'green';
+      case 'LOW_STOCK':
+        return '#cf7200ff';
+      case 'OUT_OF_STOCK':
+        return 'red';
+      default:
+        return 'black'; // bilinmeyen durumlar için
+    }
   }
 }
