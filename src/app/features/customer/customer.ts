@@ -152,12 +152,29 @@ export class CustomerComponent implements OnInit {
     this.http
       .post(
         `http://localhost:8080/api/cart/add/${this.currentUser.id}`,
-        this.selectedProduct
+        this.selectedProduct,
+        ({responseType:"text"})
       )
       .subscribe(() => {
         alert('Seçili Ürün Sepete Eklenmiştir.');
         this.refreshProducts();
       });
+  }
+  clearCart(){
+    this.http
+        .delete(`http://localhost:8080/api/cart/clear/${this.currentUser.id}`,({responseType:"text"}))
+        .subscribe(()=>{
+          alert("Sepet Temizlendi");
+          this.refreshCart();
+        });
+  }
+  confirmCart(){
+    this.http
+        .delete(`http://localhost:8080/api/cart/confirm/${this.currentUser.id}`,({responseType:"text"}))
+        .subscribe(()=>{
+          alert("Siparaişiniz Alındı.");
+          this.refreshCart();
+        });
   }
   deleteUser() {
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {

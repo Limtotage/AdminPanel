@@ -62,30 +62,30 @@
                 </p>
 
                 <div style="display: flex; align-items: center; gap: 0.5rem">
-                <button
-                  mat-mini-button
-                  color="primary"
-                  (click)="decreaseQuantity(product)"
-                >
-                  -
-                </button>
+                  <button
+                    mat-mini-button
+                    color="primary"
+                    (click)="decreaseQuantity(product)"
+                  >
+                    -
+                  </button>
 
-                <input
-                  matInput
-                  type="number"
-                  [(ngModel)]="product.quantity"
-                  class="no-spinner"
-                  min="1"
-                  style="width: 60px; text-align: center"
-                />
+                  <input
+                    matInput
+                    type="number"
+                    [(ngModel)]="product.quantity"
+                    class="no-spinner"
+                    min="1"
+                    style="width: 60px; text-align: center"
+                  />
 
-                <button
-                  mat-mini-button
-                  color="primary"
-                  (click)="increaseQuantity(product)"
-                >
-                  +
-                </button>
+                  <button
+                    mat-mini-button
+                    color="primary"
+                    (click)="increaseQuantity(product)"
+                  >
+                    +
+                  </button>
                 </div>
 
                 <button
@@ -160,9 +160,11 @@
               <p>
                 <strong>₺{{ item.productPrice * item.quantity }}</strong>
               </p>
-              <p [ngStyle]="{'color': getStockColor(item.stockStatus)}">
-                {{item.stockStatus}} <br/>
-                <span *ngIf="item.stockStatus==='LOW_STOCK'"> Son {{item.stockQuantity}} ürün kaldı.</span>
+              <p [ngStyle]="{ color: getStockColor(item.stockStatus) }">
+                {{ item.stockStatus }} <br />
+                <span *ngIf="item.stockStatus === 'LOW_STOCK'">
+                  Son {{ item.stockQuantity }} ürün kaldı.</span
+                >
               </p>
               <p>
                 <strong>adet {{ item.quantity }}</strong>
@@ -207,16 +209,24 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <p >
-        <strong> Toplam Sepet Tutarı {{myCart.totalPrice}}</strong>
+      <p>
+        <strong> Toplam Sepet Tutarı {{ myCart.totalPrice }}</strong>
       </p>
       <button
         mat-raised-button
         color="primary"
-        (click)="removeProductFromList()"
+        (click)="clearCart()"
         style="margin-top: 1rem"
       >
-        Seçilenleri Kaldır
+        Sepeti Boşalt
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="confirmCart()"
+        style="margin-top: 1rem"
+      >
+        Alışverişi Tamamla
       </button>
     </div>
   </div>
