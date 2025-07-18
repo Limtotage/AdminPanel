@@ -1,1 +1,68 @@
 Admin Panel Düzenlendive routing ile daha düzgün bir görünüme sahip oldu.
+
+1) Admin Panel – Tek Ekran Düzeni
+
+Tüm veriler (Customer, Seller, Products, Categories) tek ekranda gösterilecek.
+
+2 seçenek:
+
+    Sayfa değiştirmeli gösterim (routing ile)
+
+    Sayfa değiştirmeden, üstteki 4 butonla görünüm değişimi
+
+    Angular'da ngIf ile görünüm değişimi sağlayabilirsin veya *ngSwitch.
+
+2) Payment Düzenlemesi
+
+Kart bilgileri girilerek ödeme tamamlanacak.
+
+Ödeme sonrası:
+
+    Başarı mesajı gösterilecek.
+
+    Sipariş geçmişine kayıt eklenecek.
+
+    Backend'de PaymentDTO response olarak ResponseEntity.ok(dto) şeklinde düzgün dönmeli.
+
+3) Stokta Olmayan Ürün Eklemeye Hata Ver
+
+Şu an 403 (Forbidden) dönüyor, bu yanlış.
+
+Daha anlamlı bir response dön:
+
+return ResponseEntity
+  .status(HttpStatus.BAD_REQUEST)
+  .body("Stokta olmayan ürün sepete eklenemez.");
+
+    Frontend’de de buna uygun uyarı ver.
+
+4) Customer Panel – Ürün Görünümü (Zaman Kalırsa)
+
+Hepsiburada/Trendyol tarzı grid görünüm.
+
+Her ürün: Fotoğraf, isim, fiyat, sepete ekle butonu
+
+    Angular'da mat-card ya da ngFor + div.card ile yapılabilir.
+
+5) Backend – CartItem'a Erişim Problemi
+
+Hata: Cart yerine doğrudan CartItem’a erişememe
+
+    Kontrol edilecekler:
+
+        Cart ve CartItem arasındaki ilişki doğru tanımlı mı? (@OneToMany(mappedBy = "cart"))
+
+        CartItem listesine ulaşmak için: cart.getCartItems()
+
+        CartItem içinde @ManyToOne ile Cart tanımlanmış mı?
+
+6) Payment – DTO Response Dönme Problemi
+
+Şu an sadece ok("DTO SAVED") dönüyor
+
+Dönmesi gereken örnek:
+
+return ResponseEntity.ok(paymentDTO);
+
+Gerekirse @JsonIgnore veya @JsonInclude kullanarak dönen DTO sadeleştirilebilir.
+

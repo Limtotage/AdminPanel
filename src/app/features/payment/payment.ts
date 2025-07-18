@@ -1,67 +1,54 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../core/auth/auth';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RouterModule } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedImportsModule } from '../../shared-imports-module';
 import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
+import { AuthService } from '../../core/auth/auth';
 
 @Component({
   selector: 'app-payment',
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCheckboxModule,
-    FormsModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCardModule,
-    MatSelectModule,
-  ],
+  imports: [CommonModule, SharedImportsModule],
   templateUrl: './payment.html',
-  styleUrl: './payment.scss',
+  styleUrls: ['./payment.scss'],
 })
 export class PaymentComponent implements OnInit {
+  paymentForm: FormGroup;
   currentUser: any;
-  paymentData = {
-    cardNumber: '',
-    cardHolderName: '',
-    expiryMonth: '',
-    expiryYear: '',
-    cvc: '',
-  };
-
-  message = '';
-  totalPaid = 0;
-  paymentDate = '';
-
-  constructor(private authservice: AuthService, private http: HttpClient) {}
-
+  constructor(
+    private authservice: AuthService,
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private snackBar: MatSnackBar
+  ) {
+    this.paymentForm = this.fb.group({
+      cardNumber: ['', [Validators.required, Validators.minLength(16)]],
+      expirationDate: ['', Validators.required],
+      cvc: ['', [Validators.required, Validators.minLength(3)]],
+      cardHolderName: ['', Validators.required],
+    });
+  }
+  returnCustomer(){
+    location.href = '/customer'
+  }
   ngOnInit(): void {
     this.authservice.getCurrentUser().subscribe((user) => {
       this.currentUser = user;
-      console.log('Giriş yapan kullanıcı:', user);
     });
   }
+
   submitPayment() {
-    const customerId = 1; // Giriş yapan kullanıcıya göre dinamik yaparsın
+    if (this.paymentForm.invalid) return;
+
     this.http
-      .post<any>(
-        `http://localhost:8080/api/payment/${this.currentUser.id}`,
-        this.paymentData
-      )
+      .post(`http://localhost:8080/api/payment/${this.currentUser.id}`, this.paymentForm.value)
       .subscribe({
         next: (res) => {
-          this.message = res.message;
-          this.totalPaid = res.totalPaid;
-          this.paymentDate = res.paymentDate;
+          this.snackBar.open('Ödeme başarılı!', 'Kapat', { duration: 3000 });
+          // yönlendirme veya form reset
         },
-        error: (err) => {
-          this.message = 'Ödeme başarısız: ' + err.error;
+        error: () => {
+          this.snackBar.open('Ödeme başarısız!', 'Kapat', { duration: 3000 });
         },
       });
   }

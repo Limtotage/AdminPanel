@@ -11,11 +11,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule],
   exports: [
+    ReactiveFormsModule,
     MatCardModule,
     MatInputModule,
     MatButtonModule,

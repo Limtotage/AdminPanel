@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-customer',
@@ -21,12 +22,13 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatSelectModule,
   ],
+  styleUrls:['./customer.scss'],
   templateUrl: './customer.html',
 })
 export class CustomerComponent implements OnInit {
   products: any[] = [];
   myCartItems: any[] = [];
-  myCart:any=[];
+  myCart: any = [];
   currentUser: any;
   categories: any[] = [];
   selectedProduct = {
@@ -37,7 +39,11 @@ export class CustomerComponent implements OnInit {
   FilteredProductCategoryName: String = '';
   FilteredOwnProductCategoryName: String = '';
 
-  constructor(private authservice: AuthService, private http: HttpClient) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private authservice: AuthService,
+    private http: HttpClient
+  ) {}
   refreshProducts() {
     this.loadProducts();
     this.loadCartItems();
@@ -45,7 +51,7 @@ export class CustomerComponent implements OnInit {
     this.loadProductsByCategory();
     this.loadCart();
   }
-  refreshCart(){
+  refreshCart() {
     this.loadCart();
     this.loadCartItems();
   }
@@ -62,18 +68,20 @@ export class CustomerComponent implements OnInit {
       .get<any[]>('http://localhost:8080/api/category/approved')
       .subscribe((data) => (this.categories = data));
   }
-  untoggleProduct() {}
   loadProducts() {
     this.http
       .get<any[]>('http://localhost:8080/api/product')
       .subscribe(
-        (data) => (this.products = data.map((p) => ({ ...p, quantity: 1 })))
+        (data) => (
+          console.log('Product Info: ', data),
+          (this.products = data.map((p) => ({ ...p, quantity: 1 })))
+        )
       );
   }
   loadCart() {
     this.http
       .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
-      .subscribe((data) => (this.myCart=data , console.log(data)));
+      .subscribe((data) => ((this.myCart = data), console.log(data)));
   }
   loadCartItems() {
     this.http
@@ -113,9 +121,9 @@ export class CustomerComponent implements OnInit {
     this.http
       .get<any[]>(`http://localhost:8080/api/cart-items/${this.currentUser.id}`)
       .subscribe((data) => {
-         this.myCartItems = data.filter(
-           p=>p.categoryName === this.FilteredOwnProductCategoryName
-         )
+        this.myCartItems = data.filter(
+          (p) => p.categoryName === this.FilteredOwnProductCategoryName
+        );
       });
   }
 
@@ -126,29 +134,32 @@ export class CustomerComponent implements OnInit {
       .post(
         `http://localhost:8080/api/cart/add/${this.currentUser.id}`,
         this.selectedProduct,
-        ({responseType:"text"})
+        { responseType: 'text' }
       )
-      .subscribe(() => {
-        alert('Seçili Ürün Sepete Eklenmiştir.');
-        this.refreshProducts();
+      .subscribe({
+        next: (msg) => {
+          alert(msg);
+          this.refreshProducts();
+        },
+        error: (err) => {
+          const msg = err.status === 400 ? err.error : 'Ürün Eklenemedi.';
+          this.snackBar.open(msg, 'Kapat', { duration: 3000 });
+        },
       });
   }
-  clearCart(){
+  clearCart() {
     this.http
-        .delete(`http://localhost:8080/api/cart/clear/${this.currentUser.id}`,({responseType:"text"}))
-        .subscribe(()=>{
-          alert("Sepet Temizlendi");
-          this.refreshCart();
-        });
+      .delete(`http://localhost:8080/api/cart/clear/${this.currentUser.id}`, {
+        responseType: 'text',
+      })
+      .subscribe(() => {
+        alert('Sepet Temizlendi');
+        this.refreshProducts();
+        this.refreshCart();
+      });
   }
-  confirmCart(){
+  confirmCart() {
     location.href = '/payment';
-    // this.http
-    //     .delete(`http://localhost:8080/api/cart/confirm/${this.currentUser.id}`,({responseType:"text"}))
-    //     .subscribe(()=>{
-    //       alert("Siparaişiniz Alındı.");
-    //       this.refreshCart();
-    //     });
   }
   deleteUser() {
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
@@ -179,7 +190,15 @@ export class CustomerComponent implements OnInit {
   increaseQuantityfromCart(item: any) {
     this.http
       .put(`http://localhost:8080/api/cart-items/increase/${item.id}`, null)
-      .subscribe(() => this.refreshCart());
+      .subscribe({
+        next: () => {
+          console.log('Artırıldı'), this.refreshCart();
+        },
+        error: (err) => {
+          const msg = err.status === 400 ? err.error : 'Bir hata oluştu.';
+          this.snackBar.open(msg, 'Kapat', { duration: 3000 });
+        },
+      });
   }
   logout() {
     localStorage.removeItem('token');
