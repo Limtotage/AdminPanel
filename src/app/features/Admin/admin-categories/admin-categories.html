@@ -1,0 +1,73 @@
+<div style="display: grid; justify-content: center">
+  <div>
+    <h3>Tüm Kategoriler</h3>
+    <mat-card style="max-height: 400px; overflow: auto">
+      <mat-card-content>
+        <table class="seller-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Kategori İsmi</th>
+              <th>Onay Durumu</th>
+              <th>Ürünleri</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of categories">
+              <td>{{ c.id }}</td>
+              <td>{{ c.name }}</td>
+              <td>{{ c.isApproved }}</td>
+              <td>{{ c.productsIds }}</td>
+              <td>
+                <button class="danger" (click)="deleteCategory(c.id)">
+                  Sil
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div style="display: flex; justify-content: center">
+    <h3>Onay Bekleyen Kategoriler</h3>
+  </div>
+
+  <div style="display: flex; justify-content: center">
+    <div>
+      <mat-card style="max-height: 400px; overflow: auto">
+        <mat-card-content>
+          <table class="seller-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Kategori İsmi</th>
+                <th>Onay Durumu</th>
+                <th>Onayla</th>
+                <th>Reddet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of pendingCategory">
+                <td>{{ c.id }}</td>
+                <td>{{ c.name }}</td>
+                <td>{{ c.isApproved }}</td>
+                <td>
+                  <button class="success" (click)="approveCategory(c.id)">
+                    Onayla
+                  </button>
+                </td>
+                <td>
+                  <button class="danger" (click)="deleteCategory(c.id)">
+                    Sil
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -21,12 +21,6 @@ export const routes: Routes = [
     component: PaymentComponent,
   },
   {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [RoleGuard],
-    data: { role: 'ADMIN' },
-  },
-  {
     path: 'customer',
     component: CustomerComponent,
     canActivate: [RoleGuard],
@@ -37,5 +31,12 @@ export const routes: Routes = [
     component: SellerComponent,
     canActivate: [RoleGuard],
     data: { role: 'SELLER' },
+  },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./features/Admin/admin-module-module').then((m) => m.AdminModule),
+    canActivate: [RoleGuard],
+    data: { role: 'ADMIN' },
   },
 ];

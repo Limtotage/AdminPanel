@@ -1,0 +1,33 @@
+<div style="display: flex; justify-content: center">
+  <div>
+    <h3>Tüm Kullanıcılar</h3>
+    <mat-card style="max-height: 400px; overflow: auto">
+      <mat-card-content>
+        <table class="seller-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Kullanıcı Adı</th>
+              <th>Adı Soyadı</th>
+              <th>Ürünleri</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of customers">
+              <td>{{ c.id }}</td>
+              <td>{{ c.username }}</td>
+              <td>{{ c.fullname }}</td>
+              <td>{{ c.productsIds }}</td>
+              <td>
+                <button class="danger" (click)="deleteCustomer(c.id)">
+                  Sil
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

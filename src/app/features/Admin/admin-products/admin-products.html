@@ -1,0 +1,35 @@
+<div style="display: flex; justify-content: center">
+  <div>
+    <h3>Tüm Ürünler</h3>
+    <mat-card style="max-height: 400px; overflow: auto">
+      <mat-card-content>
+        <table class="seller-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ürün Adı</th>
+              <th>Kategorisi</th>
+              <th>Stok Adeti</th>
+              <th>Fiyatı</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of products">
+              <td>{{ p.id }}</td>
+              <td>{{ p.name }}</td>
+              <td>{{ p.categoryName }}</td>
+              <td>{{ p.productStock }}</td>
+              <td>{{ p.price }}</td>
+              <td>
+                <button class="danger" (click)="deleteProduct(p.id)">
+                  Sil
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
