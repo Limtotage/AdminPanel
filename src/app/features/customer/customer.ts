@@ -19,6 +19,7 @@ import { SharedImportsModule } from '../../shared-imports-module';
   templateUrl: './customer.html',
 })
 export class CustomerComponent implements OnInit {
+  selectedSortOption: string = '';
   products: any[] = [];
   myCartItems: any[] = [];
   orders: any[] = [];
@@ -47,7 +48,7 @@ export class CustomerComponent implements OnInit {
     this.loadCart();
     this.loadCartItems();
   }
-  refreshProduct(){
+  refreshProduct() {
     this.loadProducts();
   }
 
@@ -147,6 +148,28 @@ export class CustomerComponent implements OnInit {
           this.snackBar.open(msg, 'Kapat', { duration: 3000 });
         },
       });
+  }
+  sortProducts() {
+    switch (this.selectedSortOption) {
+      case 'price-asc':
+        this.products.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        this.products.sort((a, b) => b.price - a.price);
+        break;
+      case 'name-asc':
+        this.products.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        this.products.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'sales-asc':
+        this.products.sort((a, b) => a.totalSales - b.totalSales);
+        break;
+      case 'sales-desc':
+        this.products.sort((a, b) => b.totalSales - a.totalSales);
+        break;
+    }
   }
   clearCart() {
     this.http

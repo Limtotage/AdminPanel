@@ -10,7 +10,7 @@
     </div>
   </div>
   <!--Tüm Ürünlerin Listesi -->
-  <div style=" justify-content: space-evenly">
+  <div style="justify-content: space-evenly">
     <div>
       <div
         style="
@@ -23,7 +23,39 @@
           <h2>Ürün Listesi</h2>
         </div>
         <div>
-          <button mat-button color="primary" style="color: #e65100;" (click)="toCart()">Sepetim</button>
+          <mat-form-field
+            appearance="outline"
+            style="width: 300px; margin-bottom: 1rem"
+          >
+            <mat-label>Ürünleri sırala</mat-label>
+            <mat-select
+              [(value)]="selectedSortOption"
+              (selectionChange)="sortProducts()"
+            >
+              <mat-optgroup label="Fiyata göre sırala">
+                <mat-option value="price-asc">Artan</mat-option>
+                <mat-option value="price-desc">Azalan</mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="Ada göre sırala">
+                <mat-option value="name-asc">Alfabetik (A-Z)</mat-option>
+                <mat-option value="name-desc">Ters Alfabetik (Z-A)</mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="En çok satanlara göre sırala">
+                <mat-option value="sales-asc">Az Satılan → Çok</mat-option>
+                <mat-option value="sales-desc">Çok Satılan → Az</mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <button
+            mat-button
+            color="primary"
+            style="color: #e65100"
+            (click)="toCart()"
+          >
+            Sepetim
+          </button>
         </div>
         <div>
           <button mat-button color="primary" (click)="navOrder()">
@@ -64,6 +96,9 @@
               <span *ngIf="product.stockStatus === 'LOW_STOCK'">
                 Son {{ product.productStock }} ürün kaldı.
               </span>
+            </p>
+            <p>
+              <strong>Satış Adeti {{product.totalSales}}</strong>
             </p>
 
             <p>

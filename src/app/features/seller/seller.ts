@@ -13,13 +13,12 @@ import { SharedImportsModule } from '../../shared-imports-module';
 @Component({
   selector: 'app-seller',
   standalone: true,
-  imports: [
-    SharedImportsModule
-  ],
-  styleUrls:['./seller.scss'],
+  imports: [SharedImportsModule],
+  styleUrls: ['./seller.scss'],
   templateUrl: './seller.html',
 })
 export class SellerComponent implements OnInit {
+  selectedSortOption: string = '';
   allProducts: any[] = [];
   myProducts: any[] = [];
   categories: any[] = [];
@@ -75,7 +74,7 @@ export class SellerComponent implements OnInit {
   loadAllProducts() {
     this.http
       .get<any[]>('http://localhost:8080/api/product')
-      .subscribe((data) => (this.allProducts = data));
+      .subscribe((data) => (this.allProducts = data,console.log(data)));
   }
 
   loadMyProducts() {
@@ -94,7 +93,7 @@ export class SellerComponent implements OnInit {
       .get<any[]>(
         `http://localhost:8080/api/product/category/${this.FilteredcategoryName}`
       )
-      .subscribe((data) => (this.allProducts = data));
+      .subscribe((data) => (this.allProducts = data ));
   }
   loadMyProductsByCategory() {
     if (this.FilteredMycategoryName === '') {
@@ -111,20 +110,18 @@ export class SellerComponent implements OnInit {
         );
       });
   }
-  clearArea(){
-    this.newProduct.categoryName='';
-    this.newProduct.name= '';
-    this.newProduct.productStock= 0;
-    this.newProduct.price= 0.0;
+  clearArea() {
+    this.newProduct.categoryName = '';
+    this.newProduct.name = '';
+    this.newProduct.productStock = 0;
+    this.newProduct.price = 0.0;
   }
 
   //categories
   loadCategories() {
     this.http
       .get<any[]>('http://localhost:8080/api/category/approved')
-      .subscribe(
-        (data) => ((this.categories = data))
-      );
+      .subscribe((data) => (this.categories = data));
   }
   selectProduct(product: any) {
     this.updatedProduct.name = product.name;
@@ -194,6 +191,28 @@ export class SellerComponent implements OnInit {
           alert('Hesabınız silindi');
           this.router.navigate(['/login']);
         });
+    }
+  }
+  sortProducts() {
+    switch (this.selectedSortOption) {
+      case 'price-asc':
+        this.allProducts.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        this.allProducts.sort((a, b) => b.price - a.price);
+        break;
+      case 'name-asc':
+        this.allProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        this.allProducts.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'sales-asc':
+        this.allProducts.sort((a, b) => a.totalSales - b.totalSales);
+        break;
+      case 'sales-desc':
+        this.allProducts.sort((a, b) => b.totalSales - a.totalSales);
+        break;
     }
   }
 }

@@ -9,14 +9,10 @@
       Geri
     </button>
   </div>
+  <div style="margin-right: 1rem">
+    <h2>Seçilen Ürün Listesi</h2>
+  </div>
   <div style="display: flex; justify-content: space-evenly">
-    <div
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      <div style="margin-right: 1rem">
-        <h2>Seçilen Ürün Listesi</h2>
-      </div>
-    </div>
     <mat-card style="max-height: 400px; overflow: auto">
       <mat-card-content>
         <div
@@ -53,35 +49,42 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div style="display: flex; justify-content: space-evenly">
-    <div
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      <div style="margin-right: 1rem">
-        <h2>Sepet Geçmişi</h2>
-      </div>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center"
+  >
+    <div style="margin-right: 1rem">
+      <h2>Sepet Geçmişi</h2>
     </div>
-    <mat-card style="max-height: 400px; overflow: auto">
-      <mat-card-content>
+  </div>
+  <mat-card style="max-height: 400px; overflow: auto">
+    <mat-card-content>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 1rem;
+        "
+      >
         <div
+          *ngFor="let order of orders"
           style="
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
+            border: 1px solid #ccc;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
           "
         >
-          <div
-            *ngFor="let order of orders"
-            style="
-              border: 1px solid #ccc;
-              padding: 1rem;
-              border-radius: 8px;
-              box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-            "
-          >
+          <div *ngFor="let item of order.items">
+            Adı: {{ item.productName }} <br />
+            Adeti: {{ item.quantity }} <br />
+            subtotal: {{ item.subtotal }}<br />
+            <br />
           </div>
+          Date:{{ order.orderDate }} <br />
+          ₺{{ order.totalPrice }} <br />
+          <br />
         </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

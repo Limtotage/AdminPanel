@@ -6,8 +6,8 @@ import { ActivatedRoute, Route, Router} from '@angular/router';
 @Component({
   selector: 'app-seller-products',
   imports: [SharedImportsModule],
+  styleUrls:['./../../admin.scss'],
   templateUrl: './seller-products.html',
-  styleUrl: './seller-products.scss',
 })
 export class SellerProductsComponent implements OnInit{
 

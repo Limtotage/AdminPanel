@@ -23,6 +23,31 @@
           <h3>Ürünler</h3>
         </div>
         <div>
+          <mat-form-field
+            appearance="outline"
+            style="width: 300px; margin-bottom: 1rem"
+          >
+            <mat-label>Ürünleri sırala</mat-label>
+            <mat-select
+              [(value)]="selectedSortOption"
+              (selectionChange)="sortProducts()"
+            >
+              <mat-optgroup label="Fiyata göre sırala">
+                <mat-option value="price-asc">Artan</mat-option>
+                <mat-option value="price-desc">Azalan</mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="Ada göre sırala">
+                <mat-option value="name-asc">Alfabetik (A-Z)</mat-option>
+                <mat-option value="name-desc">Ters Alfabetik (Z-A)</mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="En çok satanlara göre sırala">
+                <mat-option value="sales-asc">Az Satılan → Çok</mat-option>
+                <mat-option value="sales-desc">Çok Satılan → Az</mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
           <mat-form-field appearance="outline">
             <mat-label>Kategori</mat-label>
             <mat-select
@@ -45,6 +70,7 @@
                 <th>Ürün Adı</th>
                 <th>Ürün Fiyatı</th>
                 <th>Kategorisi</th>
+                <th>Satış</th>
               </tr>
             </thead>
             <tbody>
@@ -52,6 +78,7 @@
                 <td>{{ product.name }}</td>
                 <td>₺{{ product.price }}</td>
                 <td>{{ product.categoryName }}</td>
+                <td>{{ product.totalSales }}</td>
               </tr>
             </tbody>
           </table>
@@ -207,6 +234,7 @@
                 <th>Ürün Fiyatı</th>
                 <th>Kategorisi</th>
                 <th>Stock Adeti</th>
+                <th>Satış</th>
                 <th>İşlem</th>
               </tr>
             </thead>
@@ -217,6 +245,7 @@
                 <td>₺{{ product.price }}</td>
                 <td>{{ product.categoryName }}</td>
                 <td>{{ product.productStock }}</td>
+                <td>{{ product.totalSales }}</td>
                 <td>
                   <button class="edit" (click)="selectProduct(product)">
                     Edit

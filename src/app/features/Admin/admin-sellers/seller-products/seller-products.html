@@ -1,14 +1,24 @@
-<div style="display: flex; justify-content: space-between; align-items: center">
+<div style=" display: flex; justify-content: center; align-items: center">
   <mat-card style="max-height: 400px; overflow: auto">
     <mat-card-content>
-      <div
-        *ngFor="let product of myProducts"
-        class="mat-elevation-z2"
-        style="margin-top: 8px; padding: 8px; border: 1px solid #ccc"
-      >
-        {{ product.name }} -{{ product.categoryName }}- ₺{{ product.price }} ---
-        {{ product.productStock }}
-      </div>
+      <table class="seller-table">
+        <thead>
+          <tr>
+            <th>Ürün Adı</th>
+            <th>Ürün Fiyatı</th>
+            <th>Kategorisi</th>
+            <th>Satış</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of myProducts">
+            <td>{{ product.name }}</td>
+            <td>₺{{ product.price }}</td>
+            <td>{{ product.categoryName }}</td>
+            <td>{{ product.totalSales }}</td>
+          </tr>
+        </tbody>
+      </table>
     </mat-card-content>
   </mat-card>
 </div>

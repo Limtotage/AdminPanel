@@ -74,23 +74,4 @@ export class CustomersCartComponent implements OnInit {
         return 'black'; // bilinmeyen durumlar için
     }
   }
-  clearCart() {
-    this.http
-      .delete(`http://localhost:8080/api/cart/clear/${this.currentUserId}`, {
-        responseType: 'text',
-      })
-      .subscribe(() => {
-        alert('Sepet Temizlendi');
-      });
-  }
-  deleteCustomer(id: number) {
-    this.http
-      .delete(`http://localhost:8080/api/customer/admin/${id}`, {
-        responseType: 'text',
-      })
-      .subscribe(() => {
-        alert('Müşteri silindi');
-        this.refreshAll();
-      });
-  }
 }
