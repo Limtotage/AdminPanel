@@ -21,7 +21,7 @@ import { SharedImportsModule } from '../../shared-imports-module';
 export class CustomerComponent implements OnInit {
   products: any[] = [];
   myCartItems: any[] = [];
-  orders:any[]=[];
+  orders: any[] = [];
   myCart: any = [];
   currentUser: any;
   categories: any[] = [];
@@ -40,14 +40,15 @@ export class CustomerComponent implements OnInit {
   ) {}
   refreshProducts() {
     this.loadProducts();
-    this.loadCartItems();
     this.loadCategories();
     this.loadProductsByCategory();
-    this.loadCart();
   }
   refreshCart() {
     this.loadCart();
     this.loadCartItems();
+  }
+  refreshProduct(){
+    this.loadProducts();
   }
 
   ngOnInit(): void {
@@ -62,7 +63,7 @@ export class CustomerComponent implements OnInit {
       .get<any[]>('http://localhost:8080/api/category/approved')
       .subscribe((data) => (this.categories = data));
   }
-  navOrder(){
+  navOrder() {
     location.href = '/order';
   }
   loadProducts() {
@@ -178,7 +179,18 @@ export class CustomerComponent implements OnInit {
     if (product.quantity > 1) product.quantity -= 1;
   }
   increaseQuantity(product: any) {
-    product.quantity += 1;
+    if (product.quantity >= product.productStock) {
+      product.quantity = product.productStock;
+    } else {
+      product.quantity += 1;
+    }
+  }
+  validateQuantity(product: any) {
+    if (product.quantity > product.productStock) {
+      product.quantity = product.productStock;
+    } else if (product.quantity < 1) {
+      product.quantity = 1;
+    }
   }
   decreaseQuantityfromCart(item: any) {
     if (item.quantity > 1) {

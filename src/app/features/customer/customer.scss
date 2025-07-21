@@ -1,25 +1,63 @@
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Otomatik sütun sayısı */
-  gap: 16px;
+.product-container {
+  max-width: 100%;
+  width: 100%;
+  max-height: 600px;
+  overflow-y: auto;
   padding: 1rem;
-}
 
-.product-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  text-align: center;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+  }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  .product-card {
+    width: 100%;
+    max-width: 250px;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-input[type="number"] {
-  -moz-appearance: textfield;
+    h3 {
+      margin-top: 0;
+    }
+
+    .stock {
+      font-weight: bold;
+
+      &.low-stock {
+        color: #e65100;
+      }
+
+      &.out-of-stock {
+        color: #b71c1c;
+      }
+
+      &.in-stock {
+        color: #2e7d32;
+      }
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+
+      input {
+        width: 60px;
+        text-align: center;
+      }
+    }
+
+    .add-to-cart {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
 }

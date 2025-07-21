@@ -39,15 +39,22 @@
       </div>
       <mat-card style="max-height: 400px; overflow: auto">
         <mat-card-content>
-          <div
-            *ngFor="let product of allProducts"
-            class="mat-elevation-z2"
-            style="margin-bottom: 8px; padding: 8px; border: 1px solid #ccc"
-          >
-            {{ product.name }} - {{ product.categoryName }} - ₺{{
-              product.price
-            }}
-          </div>
+          <table class="seller-table">
+            <thead>
+              <tr>
+                <th>Ürün Adı</th>
+                <th>Ürün Fiyatı</th>
+                <th>Kategorisi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of allProducts">
+                <td>{{ product.name }}</td>
+                <td>₺{{ product.price }}</td>
+                <td>{{ product.categoryName }}</td>
+              </tr>
+            </tbody>
+          </table>
         </mat-card-content>
       </mat-card>
     </div>
@@ -148,7 +155,11 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Stok</mat-label>
-          <input matInput type="number" [(ngModel)]="updatedProduct.productStock" />
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="updatedProduct.productStock"
+          />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -188,24 +199,32 @@
       <!-- Ürünler Listesi -->
       <mat-card style="max-height: 400px; overflow: auto">
         <mat-card-content>
-          <div>
-            <div
-              *ngFor="let product of myProducts"
-              class="mat-elevation-z2"
-              style="margin-top: 8px; padding: 8px; border: 1px solid #ccc"
-            >
-              {{ product.name }} -{{ product.categoryName }}- ₺{{
-                product.price
-              }} --- {{product.productStock}}
-              <button
-                matButton
-                color="primary"
-                (click)="selectProduct(product)"
-              >
-                Düzenle
-              </button>
-            </div>
-          </div>
+          <table class="seller-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ürün Adı</th>
+                <th>Ürün Fiyatı</th>
+                <th>Kategorisi</th>
+                <th>Stock Adeti</th>
+                <th>İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of myProducts">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>₺{{ product.price }}</td>
+                <td>{{ product.categoryName }}</td>
+                <td>{{ product.productStock }}</td>
+                <td>
+                  <button class="edit" (click)="selectProduct(product)">
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </mat-card-content>
       </mat-card>
     </div>

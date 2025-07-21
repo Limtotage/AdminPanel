@@ -16,6 +16,7 @@ import { SharedImportsModule } from '../../shared-imports-module';
   imports: [
     SharedImportsModule
   ],
+  styleUrls:['./seller.scss'],
   templateUrl: './seller.html',
 })
 export class SellerComponent implements OnInit {

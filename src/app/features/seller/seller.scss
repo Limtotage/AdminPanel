@@ -1,0 +1,54 @@
+.seller-table {
+  width: 800px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-family: Arial, sans-serif;
+
+  th,
+  td {
+    padding: 12px 20px;
+    text-align: left;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: #e0e0e0;
+    font-weight: bold;
+  }
+
+  tr:hover td {
+    background-color: #f1f1f1;
+  }
+
+  button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    color: white;
+
+    &.danger {
+      background-color: #ff4d4f;
+
+      &:hover {
+        background-color: #d9363e;
+      }
+    }
+    &.edit{
+      background-color: rgb(48, 186, 250);
+      &:hover{
+        background-color: rgb(32, 197, 183);
+      }
+    }
+
+    &.success {
+      background-color: #52c41a;
+
+      &:hover {
+        background-color: #389e0d;
+      }
+    }
+  }
+}

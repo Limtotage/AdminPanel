@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedImportsModule } from '../../../shared-imports-module';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/auth/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
@@ -17,6 +18,7 @@ export class PaymentComponent implements OnInit {
   currentUser: any;
   constructor(
     private authservice: AuthService,
+    private router:Router,
     private fb: FormBuilder,
     private http: HttpClient,
     private snackBar: MatSnackBar
@@ -45,7 +47,8 @@ export class PaymentComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.snackBar.open('Ödeme başarılı!', 'Kapat', { duration: 3000 });
-          // yönlendirme veya form reset
+          this.paymentForm.reset();
+          this.router.navigate(['/customer']);
         },
         error: () => {
           this.snackBar.open('Ödeme başarısız!', 'Kapat', { duration: 3000 });

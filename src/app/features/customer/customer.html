@@ -10,7 +10,7 @@
     </div>
   </div>
   <!--Tüm Ürünlerin Listesi -->
-  <div style="display: flex; justify-content: space-evenly">
+  <div style=" justify-content: space-evenly">
     <div>
       <div
         style="
@@ -23,10 +23,12 @@
           <h2>Ürün Listesi</h2>
         </div>
         <div>
-          <button mat-button color="primary" (click)="toCart()">Sepetim</button>
+          <button mat-button color="primary" style="color: #e65100;" (click)="toCart()">Sepetim</button>
         </div>
         <div>
-          <button mat-button color="primary" (click)="navOrder()">Sipariş Geçmişi</button>
+          <button mat-button color="primary" (click)="navOrder()">
+            Sipariş Geçmişi
+          </button>
         </div>
         <div>
           <mat-form-field appearance="outline">
@@ -43,81 +45,68 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <!--Test Alanı-->
-
-        <mat-card style="max-height: 400px; overflow: auto">
-          <mat-card-content>
-            <div
-              style="
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                gap: 1rem;
-              "
-            >
-              <div
-                *ngFor="let product of products"
-                style="
-                  border: 1px solid #ccc;
-                  padding: 1rem;
-                  border-radius: 8px;
-                  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-                "
-              >
-                <h3>{{ product.name }}</h3>
-                <p [ngStyle]="{ color: getStockColor(product.stockStatus) }">
-                  {{ product.stockStatus }} <br />
-                  <span *ngIf="product.stockStatus === 'LOW_STOCK'">
-                    Son {{ product.productStock }} ürün kaldı.</span
-                  >
-                </p>
-                <p>
-                  <strong>₺{{ product.price }}</strong>
-                </p>
-
-                <div style="display: flex; align-items: center; gap: 0.5rem">
-                  <button
-                    mat-mini-button
-                    color="primary"
-                    (click)="decreaseQuantity(product)"
-                  >
-                    -
-                  </button>
-
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="product.quantity"
-                    class="no-spinner"
-                    min="1"
-                    style="width: 60px; text-align: center"
-                  />
-
-                  <button
-                    mat-mini-button
-                    color="primary"
-                    (click)="increaseQuantity(product)"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  mat-raised-button
-                  color="accent"
-                  style="margin-top: 1rem; width: 100%"
-                  (click)="addToCart(product)"
-                >
-                  Sepete Ekle
-                </button>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <!--Test Alanı Sonu-->
-      </div>
     </div>
+    <mat-card class="product-container" style="width: 100%">
+      <mat-card-content>
+        <div class="grid">
+          <div class="product-card" *ngFor="let product of products">
+            <h3>{{ product.name }}</h3>
+
+            <p
+              class="stock"
+              [ngClass]="{
+                'low-stock': product.stockStatus === 'LOW_STOCK',
+                'out-of-stock': product.stockStatus === 'OUT_OF_STOCK',
+                'in-stock': product.stockStatus === 'IN_STOCK'
+              }"
+            >
+              {{ product.stockStatus }} <br />
+              <span *ngIf="product.stockStatus === 'LOW_STOCK'">
+                Son {{ product.productStock }} ürün kaldı.
+              </span>
+            </p>
+
+            <p>
+              <strong>₺{{ product.price }}</strong>
+            </p>
+
+            <div class="quantity-control">
+              <button
+                mat-mini-button
+                color="primary"
+                (click)="decreaseQuantity(product)"
+              >
+                -
+              </button>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="product.quantity"
+                (ngModelChange)="validateQuantity(product)"
+                min="1"
+                [max]="product.productStock"
+              />
+              <button
+                mat-mini-button
+                color="primary"
+                (click)="increaseQuantity(product)"
+              >
+                +
+              </button>
+            </div>
+
+            <button
+              mat-raised-button
+              color="accent"
+              class="add-to-cart"
+              (click)="addToCart(product)"
+            >
+              Sepete Ekle
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
     <!--Seçilen Ürünler Listesi-->
   </div>
 </div>
