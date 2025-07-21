@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-mycart',
   imports: [SharedImportsModule],
   templateUrl: './mycart.html',
-  styleUrl: './mycart.scss',
+  styleUrl: '../customer.scss',
 })
 export class MycartComponent implements OnInit {
   myCartItems: any[] = [];
