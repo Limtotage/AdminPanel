@@ -6,7 +6,7 @@ import { AdminProductsComponent } from './admin-products/admin-products';
 import { AdminCustomersComponent } from './admin-customers/admin-customers';
 import { AdminSellersComponent } from './admin-sellers/admin-sellers';
 import { AdminComponent } from './admin';
-
+import { CustomersCartComponent } from './admin-customers/customers-cart/customers-cart';
 
 const routes: Routes = [
   {
@@ -17,8 +17,9 @@ const routes: Routes = [
       { path: 'products', component: AdminProductsComponent },
       { path: 'categories', component: AdminCategoriesComponent },
       { path: 'sellers', component: AdminSellersComponent },
-    ]
-  }
+      { path: 'cart',component: CustomersCartComponent },
+    ],
+  },
 ];
 
 @NgModule({
@@ -26,5 +27,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AdminRoutingModule { }
-
+export class AdminRoutingModule {}

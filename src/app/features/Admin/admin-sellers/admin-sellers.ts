@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { SharedImportsModule } from '../../../shared-imports-module';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-sellers',
-  imports: [CommonModule, SharedImportsModule],
+  imports: [SharedImportsModule],
   templateUrl: './admin-sellers.html',
   styleUrl: '../admin.scss',
 })

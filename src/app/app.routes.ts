@@ -8,7 +8,9 @@ import { UsersComponent } from './features/users/users';
 import { AuthGuard } from './core/auth/auth-guard';
 import { RoleGuard } from './services/role-guard';
 import { RegisterComponent } from './features/register/register';
-import { PaymentComponent } from './features/payment/payment';
+import { PaymentComponent } from './features/customer/payment/payment';
+import { MycartComponent } from './features/customer/mycart/mycart';
+import { OrdersComponent } from './features/customer/orders/orders';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -31,6 +33,18 @@ export const routes: Routes = [
     component: SellerComponent,
     canActivate: [RoleGuard],
     data: { role: 'SELLER' },
+  },
+  {
+    path:'mycart',
+    component:MycartComponent,
+    canActivate:[RoleGuard],
+    data:{ role: 'CUSTOMER'}
+  },
+  {
+    path:'order',
+    component:OrdersComponent,
+    canActivate:[RoleGuard],
+    data:{role:'CUSTOMER'}
   },
   {
     path: 'admin',

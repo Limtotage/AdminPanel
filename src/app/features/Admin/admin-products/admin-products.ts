@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-products',
-  imports: [CommonModule,SharedImportsModule],
+  imports: [SharedImportsModule],
   templateUrl: './admin-products.html',
   styleUrl: '../admin.scss',
 })

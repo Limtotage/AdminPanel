@@ -1,0 +1,28 @@
+<div style="justify-content: space-between; align-items: center">
+  <div>
+    <button mat-raised-button color="primary" (click)="back()" >
+      Geri
+    </button>
+  </div>
+  <div>
+    <h2>Ürün Listesi</h2>
+  </div>
+  <div>
+    <mat-card>
+      <mat-card-content>
+        <mat-option *ngFor="let o of orders">
+          <br/>
+          {{ o.orderDate}} --- {{o.totalPrice}}
+          <br/>
+          <div *ngFor="let item of o.items ">
+            ürün Adı: {{item.productName}} <br/>
+            fiyatı:{{item.subtotal/item.quantity}} <br/>
+            Adeti: {{item.quantity}} <br/>
+            subtotal:{{item.subtotal}}
+          </div>
+
+        </mat-option>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

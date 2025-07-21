@@ -1,35 +1,20 @@
-import { AuthService } from '../../core/auth/auth';
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { SharedImportsModule } from '../../../shared-imports-module';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SharedImportsModule } from '../../shared-imports-module';
+import { AuthService } from '../../../core/auth/auth';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-customer',
-  standalone: true,
+  selector: 'app-mycart',
   imports: [SharedImportsModule],
-  styleUrls: ['./customer.scss'],
-  templateUrl: './customer.html',
+  templateUrl: './mycart.html',
+  styleUrl: './mycart.scss',
 })
-export class CustomerComponent implements OnInit {
-  products: any[] = [];
+export class MycartComponent implements OnInit {
   myCartItems: any[] = [];
-  orders:any[]=[];
   myCart: any = [];
   currentUser: any;
   categories: any[] = [];
-  selectedProduct = {
-    productId: 0,
-    quantity: 0,
-  };
-  UnselectProductIds: Set<number> = new Set();
   FilteredProductCategoryName: String = '';
   FilteredOwnProductCategoryName: String = '';
 
@@ -39,10 +24,8 @@ export class CustomerComponent implements OnInit {
     private http: HttpClient
   ) {}
   refreshProducts() {
-    this.loadProducts();
     this.loadCartItems();
     this.loadCategories();
-    this.loadProductsByCategory();
     this.loadCart();
   }
   refreshCart() {
@@ -62,26 +45,14 @@ export class CustomerComponent implements OnInit {
       .get<any[]>('http://localhost:8080/api/category/approved')
       .subscribe((data) => (this.categories = data));
   }
-  navOrder(){
-    location.href = '/order';
-  }
-  loadProducts() {
-    this.http
-      .get<any[]>('http://localhost:8080/api/product')
-      .subscribe(
-        (data) => (
-          console.log('Product Info: ', data),
-          (this.products = data.map((p) => ({ ...p, quantity: 1 })))
-        )
-      );
-  }
+
   loadCart() {
     this.http
       .get<any[]>(`http://localhost:8080/api/cart/${this.currentUser.id}`)
       .subscribe((data) => ((this.myCart = data), console.log(data)));
   }
-  toCart() {
-    location.href = '/mycart';
+  toCustomer() {
+    location.href = '/customer';
   }
   loadCartItems() {
     this.http
@@ -101,17 +72,7 @@ export class CustomerComponent implements OnInit {
         alert('Item Removed from Cart.');
       });
   }
-  loadProductsByCategory() {
-    if (this.FilteredProductCategoryName === '') {
-      this.loadProducts();
-      return;
-    }
-    this.http
-      .get<any[]>(
-        `http://localhost:8080/api/product/category/${this.FilteredProductCategoryName}`
-      )
-      .subscribe((data) => (this.products = data));
-  }
+
   loadOwnCartItemsByCategory() {
     if (this.FilteredOwnProductCategoryName === '') {
       this.loadCartItems();
@@ -124,27 +85,6 @@ export class CustomerComponent implements OnInit {
         this.myCartItems = data.filter(
           (p) => p.categoryName === this.FilteredOwnProductCategoryName
         );
-      });
-  }
-
-  addToCart(product: any) {
-    this.selectedProduct.quantity = product.quantity;
-    this.selectedProduct.productId = product.id;
-    this.http
-      .post(
-        `http://localhost:8080/api/cart/add/${this.currentUser.id}`,
-        this.selectedProduct,
-        { responseType: 'text' }
-      )
-      .subscribe({
-        next: (msg) => {
-          alert(msg);
-          this.refreshProducts();
-        },
-        error: (err) => {
-          const msg = err.status === 400 ? err.error : 'Ürün Eklenemedi.';
-          this.snackBar.open(msg, 'Kapat', { duration: 3000 });
-        },
       });
   }
   clearCart() {
@@ -160,25 +100,6 @@ export class CustomerComponent implements OnInit {
   }
   confirmCart() {
     location.href = '/payment';
-  }
-  deleteUser() {
-    if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {
-      this.http
-        .delete(`http://localhost:8080/api/customer/${this.currentUser.id}`, {
-          responseType: `text`,
-        })
-        .subscribe(() => {
-          localStorage.removeItem('token');
-          alert('Hesabınızı silindi');
-          location.href = '/login';
-        });
-    }
-  }
-  decreaseQuantity(product: any) {
-    if (product.quantity > 1) product.quantity -= 1;
-  }
-  increaseQuantity(product: any) {
-    product.quantity += 1;
   }
   decreaseQuantityfromCart(item: any) {
     if (item.quantity > 1) {
@@ -216,4 +137,5 @@ export class CustomerComponent implements OnInit {
         return 'black'; // bilinmeyen durumlar için
     }
   }
+
 }

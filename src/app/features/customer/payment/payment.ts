@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SharedImportsModule } from '../../shared-imports-module';
+import { SharedImportsModule } from '../../../shared-imports-module';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/auth/auth';
+import { AuthService } from '../../../core/auth/auth';
 
 @Component({
   selector: 'app-payment',
