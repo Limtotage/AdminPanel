@@ -34,65 +34,24 @@ export class AdminSellersComponent {
     location.href = '/login';
   }
   refreshAll() {
-    this.loadProducts();
     this.loadSellers();
-    this.loadCustomers();
-    this.loadUnapprovedCategory();
-    this.loadCategories();
   }
 
   ngOnInit(): void {
     this.refreshAll();
   }
 
-  loadProducts() {
-    this.http
-      .get<any[]>('http://localhost:8080/api/product')
-      .subscribe((data) => (this.products = data));
+  navProducts(id:number){
+    this.router.navigate(['/admin' ,'sproducts'],{
+      queryParams:{sellerId:id}})
   }
 
   loadSellers() {
     this.http
       .get<any[]>('http://localhost:8080/api/seller')
       .subscribe((data) => {
+        console.log(data);
         this.sellers = data;
-      });
-  }
-  loadCustomers() {
-    this.http
-      .get<any[]>('http://localhost:8080/api/customer')
-      .subscribe((data) => ((this.customers = data), console.log(data)));
-  }
-
-  loadUnapprovedCategory() {
-    this.http
-      .get<any[]>('http://localhost:8080/api/category/unapproved')
-      .subscribe((data) => (this.pendingCategory = data));
-  }
-  loadCategories() {
-    this.http
-      .get<any[]>('http://localhost:8080/api/category')
-      .subscribe((data) => (this.categories = data));
-  }
-
-  deleteProduct(id: number) {
-    this.http
-      .delete(`http://localhost:8080/api/product/${id}`, {
-        responseType: 'text',
-      })
-      .subscribe(() => {
-        alert('Ürün silindi');
-        this.refreshAll();
-      });
-  }
-  deleteCategory(id: number) {
-    this.http
-      .delete(`http://localhost:8080/api/category/${id}`, {
-        responseType: 'text',
-      })
-      .subscribe(() => {
-        alert('Kategori Silindi.');
-        this.refreshAll();
       });
   }
 
@@ -106,29 +65,6 @@ export class AdminSellersComponent {
         this.refreshAll();
       });
   }
-  deleteCustomer(id: number) {
-    this.http
-      .delete(`http://localhost:8080/api/customer/admin/${id}`, {
-        responseType: 'text',
-      })
-      .subscribe(() => {
-        alert('Müşteri silindi');
-        this.refreshAll();
-      });
-  }
-
-  approveCategory(id: number) {
-    this.http
-      .put(
-        `http://localhost:8080/api/category/unapproved/${id}`,
-        this.ApprovedDTO
-      )
-      .subscribe(() => {
-        alert('Kategori onaylandı');
-        this.refreshAll();
-      });
-  }
-
   deleteAccount() {
     const token = localStorage.getItem('token');
     if (confirm('Hesabınızı silmek istediğinize emin misiniz?')) {

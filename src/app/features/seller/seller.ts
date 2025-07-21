@@ -8,18 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedImportsModule } from '../../shared-imports-module';
 
 @Component({
   selector: 'app-seller',
   standalone: true,
   imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    FormsModule,
-    RouterModule,
-    MatSelectModule,
+    SharedImportsModule
   ],
   templateUrl: './seller.html',
 })

@@ -1,0 +1,14 @@
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <mat-card style="max-height: 400px; overflow: auto">
+    <mat-card-content>
+      <div
+        *ngFor="let product of myProducts"
+        class="mat-elevation-z2"
+        style="margin-top: 8px; padding: 8px; border: 1px solid #ccc"
+      >
+        {{ product.name }} -{{ product.categoryName }}- ₺{{ product.price }} ---
+        {{ product.productStock }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

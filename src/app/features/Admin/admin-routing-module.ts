@@ -7,6 +7,7 @@ import { AdminCustomersComponent } from './admin-customers/admin-customers';
 import { AdminSellersComponent } from './admin-sellers/admin-sellers';
 import { AdminComponent } from './admin';
 import { CustomersCartComponent } from './admin-customers/customers-cart/customers-cart';
+import { SellerProductsComponent } from './admin-sellers/seller-products/seller-products';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: 'products', component: AdminProductsComponent },
       { path: 'categories', component: AdminCategoriesComponent },
       { path: 'sellers', component: AdminSellersComponent },
-      { path: 'cart',component: CustomersCartComponent },
+      { path: 'sproducts', component: SellerProductsComponent },
+      { path: 'cart', component: CustomersCartComponent },
     ],
   },
 ];
